@@ -40,6 +40,30 @@ const projects = [
     category: 'AI/ML',
   },
   {
+    id: 'truemedic',
+    title: 'TrueMedic',
+    subtitle: 'Doctor Verification System',
+    desc: 'Android + Supabase: API-based doctor verification, auth, RBAC, validated workflows, structured SQL records. With companion tm_api (FastAPI + BS4 scraper).',
+    stack: ['Supabase','Dart','Python','FastAPI','PostgreSQL'],
+    highlight: false,
+    image: 'TM',
+    links: { github: 'https://github.com/Tertho1/TrueMedic', demo: null },
+    stats: 'Supabase • RBAC • BS4 scraper',
+    category: 'Web/App',
+  },
+  {
+    id: 'tube',
+    title: 'TubeGrabber',
+    subtitle: 'YouTube Downloader (Tkinter + yt-dlp)',
+    desc: 'Desktop app: search, video/audio/playlist download, threading, subprocess/FFmpeg management, progress tracking, config persistence. Educational, ToS-aware.',
+    stack: ['Python','Tkinter','yt-dlp','FFmpeg','Threading'],
+    highlight: false,
+    image: 'TG',
+    links: { github: 'https://github.com/Tertho1', demo: null },
+    stats: 'Tkinter • yt-dlp • FFmpeg',
+    category: 'Python',
+  },
+  {
     id: 'mentalqlm',
     title: 'MentalQLM',
     subtitle: 'Lightweight LLM for Mental Health (Dual LoRA)',
@@ -64,18 +88,6 @@ const projects = [
     category: 'AI/Python',
   },
   {
-    id: 'truemedic',
-    title: 'TrueMedic',
-    subtitle: 'Doctor Verification System',
-    desc: 'Android + Supabase: API-based doctor verification, auth, RBAC, validated workflows, structured SQL records. With companion tm_api (FastAPI + BS4 scraper).',
-    stack: ['Supabase','Dart','Python','FastAPI','PostgreSQL'],
-    highlight: false,
-    image: 'TM',
-    links: { github: 'https://github.com/Tertho1/TrueMedic', demo: null },
-    stats: 'Supabase • RBAC • BS4 scraper',
-    category: 'Web/App',
-  },
-  {
     id: 'iotsmarthome',
     title: 'IoT Smart Home — ESP32 v1.3-OTA',
     subtitle: 'Firmware + Dashboard + Wiring',
@@ -98,18 +110,6 @@ const projects = [
     links: { github: 'https://github.com/Tertho1', demo: null },
     stats: 'FastAPI • LibreOffice headless',
     category: 'Backend',
-  },
-  {
-    id: 'tube',
-    title: 'TubeGrabber',
-    subtitle: 'YouTube Downloader (Tkinter + yt-dlp)',
-    desc: 'Desktop app: search, video/audio/playlist download, threading, subprocess/FFmpeg management, progress tracking, config persistence. Educational, ToS-aware.',
-    stack: ['Python','Tkinter','yt-dlp','FFmpeg','Threading'],
-    highlight: false,
-    image: 'TG',
-    links: { github: 'https://github.com/Tertho1', demo: null },
-    stats: 'Tkinter • yt-dlp • FFmpeg',
-    category: 'Python',
   },
 ]
 
@@ -304,7 +304,7 @@ export default function App(){
             </div>
           </div>
 
-          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0">
+          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0 pb-10">
             <div className="rounded-[20px] sm:rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] overflow-hidden">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono min-w-0">
@@ -351,7 +351,7 @@ export default function App(){
                 <span>Photo placeholder — add later</span>
               </div>
             </div>
-            <motion.div animate={{y:[0, -6, 0]}} transition={{duration:4, repeat:Infinity, ease:'easeInOut'}} className="hidden md:flex absolute -bottom-4 -left-4 items-center gap-3 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg">
+            <motion.div animate={{y:[0, -6, 0]}} transition={{duration:4, repeat:Infinity, ease:'easeInOut'}} className="hidden lg:flex absolute bottom-0 left-4 items-center gap-3 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg translate-y-2">
               <div className="w-10 h-10 rounded-xl bg-violet-600 grid place-items-center text-white"><Sparkles size={18}/></div>
               <div>
                 <div className="text-xs font-semibold">Fast learner • Analytical</div>
