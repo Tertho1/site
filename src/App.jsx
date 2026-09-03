@@ -312,8 +312,8 @@ export default function App(){
           <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0 flex justify-center lg:justify-end">
             {/* Photo — reduced width, height matched to left text column, no captions */}
             <div className="w-full max-w-[320px] lg:max-w-[340px] rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white p-2 shadow-[0_20px_60px_rgba(0,0,0,0.08)] self-start">
-              <div className="rounded-[16px] bg-white overflow-hidden aspect-[4/5] max-h-[520px] grid place-items-center">
-                <img src="/photo.png" alt="Tertho Ghosh" className="w-full h-full object-cover bg-white scale-[1.28] origin-top object-[center_18%]" loading="eager" />
+              <div className="rounded-[16px] bg-white overflow-hidden aspect-[4/5] grid place-items-center">
+                <img src="/photo.png" alt="Tertho Ghosh" className="w-full h-full object-cover object-top bg-white scale-[1.32] origin-top" loading="eager" />
               </div>
             </div>
           </motion.div>
