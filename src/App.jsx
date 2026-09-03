@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useScroll, useSpring } from 'framer-motion'
 import {
-  Mail, MapPin, Phone, ExternalLink, ArrowUpRight, X, Sun, Moon,
-  Shield, Code2, Database, Network, Cpu, Search, Sparkles, Award, GraduationCap,
-  Briefcase, Layers, Copy, Check, Download, Menu, ChevronRight, Terminal, Lock
+  Mail, MapPin, ExternalLink, ArrowUpRight, X, Sun, Moon,
+  Shield, Code2, Database, Sparkles, Award, GraduationCap,
+  Briefcase, Layers, Copy, Check, Download, Menu, ChevronRight, Terminal, Lock, Cpu, Search, HeartHandshake
 } from 'lucide-react'
 
 const Github = (props) => (
@@ -13,57 +13,122 @@ const Linkedin = (props) => (
   <svg viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
 )
 
-// -- Data --
+// Data - prioritized real projects (non-forked, non-scrap)
 const projects = [
   {
     id: 'plagioscale',
     title: 'PlagioScale',
     subtitle: 'Cloud-native Plagiarism & AI-Content Detection',
-    desc: 'Microservices platform with hybrid TF-IDF + SBERT pipeline, transformer-based AI detection, JWT/CSRF/RBAC, Prometheus+Grafana, audit logs.',
-    stack: ['Python','FastAPI','React','PostgreSQL','Redis','Docker','Microservices','Prometheus','Grafana'],
+    desc: 'Designed end-to-end: microservices (API + worker + autoscaler + frontend), hybrid TF-IDF + SBERT, transformer AI-detector, JWT/CSRF/RBAC, rate limiting, audit logs, Prometheus/Grafana.',
+    stack: ['Python','FastAPI','React','PostgreSQL','Redis','Docker','Microservices'],
     highlight: true,
     image: 'PS',
-    links: { github: 'https://github.com/Tertho1', demo: null },
-    stats: 'Hybrid lexical + semantic • Autoscaling worker',
+    links: { github: 'https://github.com/Tertho1/PlagioScale', demo: null },
+    stats: 'Microservices • Prometheus + Grafana',
+    category: 'AI/ML',
   },
   {
     id: 'cvinsight',
     title: 'CVInsight',
-    subtitle: 'AI Resume ↔ Job Matching',
-    desc: 'XGBoost scoring (0–100) on 6,241 labeled pairs, 384-d embeddings + 12 engineered features, deployed on Streamlit.',
-    stack: ['Python','NLP','Scikit-learn','XGBoost','Streamlit'],
+    subtitle: 'AI Resume ↔ Job Matching (0–100)',
+    desc: 'XGBoost scorer on 6,241 labeled pairs, 384-d embeddings + 12 engineered features. Deployed as public Streamlit app. Feature engineering + structured NLP pipeline.',
+    stack: ['Python','NLP','XGBoost','Streamlit'],
     highlight: true,
     image: 'CV',
-    links: { github: 'https://github.com/Tertho1', demo: 'https://cvinsight-io.streamlit.app' },
+    links: { github: 'https://github.com/Tertho1/cvinsight', demo: 'https://cvinsight-io.streamlit.app' },
     stats: '6,241 pairs • 384-d embeddings',
+    category: 'AI/ML',
+  },
+  {
+    id: 'mentalqlm',
+    title: 'MentalQLM',
+    subtitle: 'Lightweight LLM for Mental Health (Dual LoRA)',
+    desc: 'Reproduction of JBHI 2025 paper: 0.5B LLM, Stage-1 LLaMA-Factory LoRA #1 + Stage-2 LoRA #2 + classification head. Best 61.7 F1 on SAD, 74.9 on DEP-SEV, beating 13B baselines.',
+    stack: ['Python','LLM','LoRA','LLaMA-Factory','Torch'],
+    highlight: true,
+    image: 'MQ',
+    links: { github: 'https://github.com/Tertho1', demo: null },
+    stats: 'Dual LoRA • 0.5B params',
+    category: 'LLM',
+  },
+  {
+    id: 'pdfsummarizer',
+    title: 'PDF Summarizer',
+    subtitle: 'OCR + BART summarization',
+    desc: 'Extracts from native + scanned PDFs (PyMuPDF + Tesseract/EasyOCR + pdf2image), preprocesses, chunks & summarizes with facebook/bart-large-cnn. Handles large docs.',
+    stack: ['Python','PyMuPDF','Tesseract','Transformers','BART'],
+    highlight: true,
+    image: 'PDF',
+    links: { github: 'https://github.com/Tertho1/pdf-summarizer', demo: null },
+    stats: 'OCR + BART-large-cnn',
+    category: 'AI/Python',
   },
   {
     id: 'truemedic',
     title: 'TrueMedic',
     subtitle: 'Doctor Verification System',
-    desc: 'Database-driven Android app with API-based verification, auth, RBAC and validation workflows on Supabase.',
-    stack: ['Supabase','SQL','API','Auth'],
+    desc: 'Android + Supabase: API-based doctor verification, auth, RBAC, validated workflows, structured SQL records. With companion tm_api (FastAPI + BS4 scraper).',
+    stack: ['Supabase','Dart','Python','FastAPI','PostgreSQL'],
     highlight: false,
     image: 'TM',
-    links: { github: 'https://github.com/Tertho1' },
+    links: { github: 'https://github.com/Tertho1/TrueMedic', demo: null },
+    stats: 'Supabase • RBAC • BS4 scraper',
+    category: 'Web/App',
   },
   {
-    id: 'netlab',
-    title: 'Network Routing & Security Lab',
-    subtitle: 'IPv4/IPv6 Multi-Router Topology',
-    desc: 'Designed multi-router topologies, configured RIP/OSPF/BGP, subnetting & troubleshooting in Cisco Packet Tracer.',
-    stack: ['Cisco Packet Tracer','IPv4/IPv6','OSPF','BGP'],
+    id: 'iotsmarthome',
+    title: 'IoT Smart Home — ESP32 v1.3-OTA',
+    subtitle: 'Firmware + Dashboard + Wiring',
+    desc: 'ESP32 firmware (WiFiManager + ElegantOTA, 6 pins), dashboard, wiring/circuit SVGs, BOM. Spec-law v1.2 compliant. PlatformIO + OTA updates.',
+    stack: ['ESP32','Arduino','PlatformIO','OTA','IoT'],
     highlight: false,
-    image: 'NL',
-    links: {},
+    image: 'IoT',
+    links: { github: 'https://github.com/Tertho1', demo: null },
+    stats: 'OTA • 6-pin • Dashboard',
+    category: 'IoT',
+  },
+  {
+    id: 'convertkit',
+    title: 'ConvertKit',
+    subtitle: 'PPTX → PDF API (LibreOffice)',
+    desc: 'High-perf FastAPI + LibreOffice headless: single -> PDF download, multi -> ZIP. Async wrapper, env-config, Dockerfile for Railway, integrated tests.',
+    stack: ['Python','FastAPI','LibreOffice','Docker'],
+    highlight: false,
+    image: 'CK',
+    links: { github: 'https://github.com/Tertho1', demo: null },
+    stats: 'FastAPI • LibreOffice headless',
+    category: 'Backend',
+  },
+  {
+    id: 'tube',
+    title: 'TubeGrabber',
+    subtitle: 'YouTube Downloader (Tkinter + yt-dlp)',
+    desc: 'Desktop app: search, video/audio/playlist download, threading, subprocess/FFmpeg management, progress tracking, config persistence. Educational, ToS-aware.',
+    stack: ['Python','Tkinter','yt-dlp','FFmpeg','Threading'],
+    highlight: false,
+    image: 'TG',
+    links: { github: 'https://github.com/Tertho1', demo: null },
+    stats: 'Tkinter • yt-dlp • FFmpeg',
+    category: 'Python',
   },
 ]
 
+const moreBuilds = [
+  { name: 'Chest Disease Detection', tech: 'Image Processing + ML', note: '402 py files — DIP ensemble' },
+  { name: 'CodeAlpha Credit Scoring', tech: 'Python • Scikit-learn', note: 'Good/Standard/Poor classifier' },
+  { name: 'ExpenseMate / Expensemate', tech: 'Laravel (Blade)', note: 'Personal finance manager' },
+  { name: 'Scrapper & Scrapper_API', tech: 'FastAPI + BS4', note: 'Scraping API (Vercel)' },
+  { name: 'File & Folder Finder', tech: 'Python CLI', note: 'Wildcard + ext filtering' },
+  { name: 'Text Searcher From Files', tech: 'PDF/DOCX/XLSX/PPTX', note: 'Multi-format content search' },
+  { name: 'PawPalace', tech: 'PHP', note: 'Pet adoption site' },
+  { name: 'Cryptography Lab', tech: 'HTML', note: 'Crypto experiments' },
+]
+
 const skills = [
-  { group: 'Security & Networking', icon: Shield, items: ['TCP/IP','OSI','Subnetting','OSPF/BGP','Cryptography','OSINT','Recon','Access Control'], color: 'emerald' },
-  { group: 'Systems & OS', icon: Terminal, items: ['Ubuntu','Kali Linux','Linux CLI','OS Fundamentals','Troubleshooting','Server Ops'], color: 'zinc' },
-  { group: 'Development', icon: Code2, items: ['Python','FastAPI','React','Docker','Microservices','Git','Supabase','Cisco PT'], color: 'blue' },
-  { group: 'Data & ML', icon: Database, items: ['PostgreSQL','MySQL','Pandas','NumPy','Scikit-learn','NLP','Torch','XGBoost'], color: 'violet' },
+  { group: 'AI / ML & LLMs', icon: Sparkles, items: ['Python','Pandas','NumPy','Scikit-learn','NLP','Torch','XGBoost','BART','SBERT','LoRA','LLaMA-Factory'], accent: 'violet' },
+  { group: 'Web & Backend', icon: Code2, items: ['FastAPI','React','Docker','Microservices','Laravel','Supabase','PostgreSQL','MySQL','Git'], accent: 'zinc' },
+  { group: 'Systems & Security', icon: Shield, items: ['Ubuntu','Kali','Linux CLI','TCP/IP','OSI','Subnetting','OSPF/BGP','Cryptography','OSINT','Recon'], accent: 'emerald' },
+  { group: 'Testing & QA', icon: Search, items: ['Manual Testing','Automation','Validation','Audit Logs','Control Testing','Evidence'], accent: 'amber' },
 ]
 
 const experiences = [
@@ -71,26 +136,35 @@ const experiences = [
     role: 'Research Trainee',
     org: 'ITRRC Cybersecurity Research Lab, Jagannath University',
     period: 'Jan 2025 — Jul 2025',
-    bullets: ['Founding cohort of university cybersecurity lab (6-month intensive)','Ubuntu/Kali, user/privilege mgmt, OS & network security','OSINT, reconnaissance, port sweeping, active/passive attacks'],
+    bullets: ['Founding cohort — 6-month hands-on training','Ubuntu/Kali, privilege & access control, OS/network security','OSINT, reconnaissance, port sweeping, active/passive attacks'],
     current: false,
   },
   {
     role: 'Head — Budget & Finance',
     org: 'TEDxJnU',
     period: '2025',
-    bullets: ['Led 6-member finance team for 500+ person event, 50+ organizers','Budget estimation, sponsorship & registration fund allocation','Live ops: registration desk, food distribution, final financial report'],
+    bullets: ['Led 6-member finance team for 500+ person event (50+ organizers)','Owned budget estimation, sponsorship & registration allocation','Live ops + final financial report'],
     current: false,
   },
   {
     role: 'Treasurer',
     org: 'IEEE Student Branch, Jagannath University',
     period: 'Jan 2025 — Feb 2026',
-    bullets: ['Treasury & financial coordination for branch activities','Financial record keeping & event finance support'],
+    bullets: ['Treasury & financial coordination','Financial record keeping & event finance support'],
     current: true,
   },
 ]
 
-function useTyping(words, speed=80, pause=1800){
+const volunteering = [
+  { title: 'Organizer — CSE Day Celebration 2024', desc: 'Project showcases, tech quizzes, guest speaker sessions; member engagement & vibrant atmosphere.' },
+  { title: 'Volunteer — Unlocking the Future: Blockchain Workshop', desc: 'Curated content, invited industry expert, supported hands-on blockchain sessions.' },
+  { title: 'Volunteer — Mastering SQA (Manual & Automation)', desc: 'Organized workshop & online competition; coordinated judging & participant experience.' },
+  { title: 'Volunteer — JnU AI & IT Fest', desc: 'Supported AI & IT festival operations.' },
+  { title: 'Volunteer — Cultural Fest, Notre Dame College', desc: 'Stage scheduling & audience coordination for annual cultural festival.' },
+  { title: 'Volunteer — Science Fair, Notre Dame College', desc: 'Exhibit scheduling, participant & judge coordination.' },
+]
+
+function useTyping(words, speed=70, pause=1600){
   const [idx,setIdx]=useState(0)
   const [txt,setTxt]=useState('')
   const [deleting,setDeleting]=useState(false)
@@ -116,59 +190,58 @@ export default function App(){
   const [copied,setCopied]=useState(false)
   const [filter,setFilter]=useState('All')
   const [selected,setSelected]=useState(null)
+  const [showMore,setShowMore]=useState(false)
   const { scrollYProgress } = useScroll()
   const scaleX = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 })
-  const typing = useTyping(['Cybersecurity Researcher','IT Audit & GITC Enthusiast','Full-Stack Builder','Competitive Programmer'],70,1500)
+  const typing = useTyping(['AI / ML & LLMs','Web Dev & QA','Python & Automation','Cybersecurity & Systems'],70,1500)
   const heroRef = useRef(null)
 
   useEffect(()=>{
     if(dark) document.documentElement.classList.add('dark')
     else document.documentElement.classList.remove('dark')
   },[dark])
-
-  // load saved theme
   useEffect(()=>{
     const m = window.matchMedia('(prefers-color-scheme: dark)').matches
     setDark(m)
   },[])
 
-  const filtered = filter==='All' ? projects : projects.filter(p=> p.stack.includes(filter) || (filter==='Featured' && p.highlight))
+  const filtered = filter==='All' ? projects : projects.filter(p=> p.stack.includes(filter) || p.category.includes(filter) || (filter==='Featured' && p.highlight))
 
   return (
-    <div className="min-h-screen relative">
-      {/* progress */}
+    <div className="min-h-screen relative overflow-x-hidden">
       <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-[2px] bg-zinc-900 dark:bg-white origin-left z-[60]" />
 
-      {/* Nav */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#fcfcf9]/70 dark:bg-[#0a0a0a]/70 border-b border-zinc-200/60 dark:border-zinc-800">
-        <div className="max-w-[1120px] mx-auto px-6 h-[64px] flex items-center justify-between">
-          <a href="#" className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center font-mono text-[13px] font-bold">TG</div>
-            <span className="font-display font-semibold tracking-tight">Tertho Ghosh</span>
-            <span className="hidden sm:inline text-xs px-2 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">Available for IT Audit / Security roles</span>
+      {/* Nav - responsive, no overflow */}
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#fcfcf9]/80 dark:bg-[#0a0a0a]/80 border-b border-zinc-200/60 dark:border-zinc-800">
+        <div className="max-w-[1120px] mx-auto px-4 sm:px-6 h-[60px] sm:h-[64px] flex items-center justify-between gap-2">
+          <a href="#" className="flex items-center gap-2 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center font-mono text-[13px] font-bold shrink-0">TG</div>
+            <span className="font-display font-semibold tracking-tight text-[15px] sm:text-base truncate">Tertho Ghosh</span>
+            <span className="hidden lg:inline text-xs px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800 whitespace-nowrap">Available for roles</span>
           </a>
-          <nav className="hidden md:flex items-center gap-6 text-sm">
+          <nav className="hidden md:flex items-center gap-5 text-sm shrink-0">
             {['About','Skills','Projects','Experience','Contact'].map(s=> (
-              <a key={s} href={`#${s.toLowerCase()}`} className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition">{s}</a>
+              <a key={s} href={`#${s.toLowerCase()}`} className="text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition whitespace-nowrap">{s}</a>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
-            <button onClick={()=>setDark(!dark)} className="w-9 h-9 rounded-full border border-zinc-200 dark:border-zinc-800 grid place-items-center hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            <button onClick={()=>setDark(!dark)} aria-label="Toggle theme" className="w-9 h-9 rounded-full border border-zinc-200 dark:border-zinc-800 grid place-items-center hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
               {dark ? <Sun size={16}/> : <Moon size={16}/>}
             </button>
-            <a href="/Tertho_Ghosh_CV.pdf" target="_blank" className="hidden sm:inline-flex items-center gap-2 px-4 h-9 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black text-sm font-medium hover:opacity-90 transition">
+            <a href="/Tertho_Ghosh_CV.pdf" target="_blank" className="hidden sm:inline-flex items-center gap-2 px-4 h-9 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black text-sm font-medium hover:opacity-90 transition whitespace-nowrap">
               <Download size={14}/> CV
             </a>
-            <button onClick={()=>setMenuOpen(!menuOpen)} className="md:hidden w-9 h-9 grid place-items-center rounded-full border border-zinc-200 dark:border-zinc-800">
+            <button onClick={()=>setMenuOpen(!menuOpen)} aria-label="Menu" className="md:hidden w-9 h-9 grid place-items-center rounded-full border border-zinc-200 dark:border-zinc-800">
               {menuOpen ? <X size={16}/> : <Menu size={16}/>}
             </button>
           </div>
         </div>
         <AnimatePresence>
           {menuOpen && (
-            <motion.div initial={{height:0}} animate={{height:'auto'}} exit={{height:0}} className="md:hidden overflow-hidden border-t border-zinc-200 dark:border-zinc-800">
-              <div className="px-6 py-4 flex flex-col gap-3 text-sm">
-                {['About','Skills','Projects','Experience','Contact'].map(s=> <a key={s} onClick={()=>setMenuOpen(false)} href={`#${s.toLowerCase()}`} className="py-2">{s}</a>)}
+            <motion.div initial={{height:0}} animate={{height:'auto'}} exit={{height:0}} className="md:hidden overflow-hidden border-t border-zinc-200 dark:border-zinc-800 bg-[#fcfcf9] dark:bg-[#0a0a0a]">
+              <div className="px-4 py-3 flex flex-col gap-1 text-sm">
+                {['About','Skills','Projects','Experience','Contact'].map(s=> <a key={s} onClick={()=>setMenuOpen(false)} href={`#${s.toLowerCase()}`} className="py-2.5 px-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-900">{s}</a>)}
+                <a href="/Tertho_Ghosh_CV.pdf" target="_blank" className="mt-2 inline-flex justify-center items-center gap-2 h-10 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black font-medium">Download CV</a>
               </div>
             </motion.div>
           )}
@@ -176,109 +249,106 @@ export default function App(){
       </header>
 
       {/* Hero */}
-      <section ref={heroRef} className="max-w-[1120px] mx-auto px-6 pt-12 md:pt-20 pb-12">
-        <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 items-start">
-          <div>
-            <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} className="inline-flex items-center gap-2 text-xs font-mono px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Dhaka, Bangladesh • 3.88 / 4.00 CGPA • JnU CSE ’26
+      <section ref={heroRef} className="max-w-[1120px] mx-auto px-4 sm:px-6 pt-8 sm:pt-12 md:pt-16 pb-8 sm:pb-12">
+        <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-8 sm:gap-10 items-start">
+          <div className="min-w-0">
+            <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} className="inline-flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-mono px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Dhaka, Bangladesh • JnU CSE ’26 • 3.88 / 4.00
             </motion.div>
-            <motion.h1 initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.05}} className="font-display font-semibold tracking-[-0.04em] leading-[0.9] text-[42px] md:text-[64px] mt-6">
+            <motion.h1 initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.05}} className="font-display font-semibold tracking-[-0.04em] leading-[0.9] text-[38px] sm:text-[48px] md:text-[60px] mt-5 sm:mt-6">
               Tertho<br/>Ghosh
-              <span className="block text-[16px] md:text-[18px] font-sans font-normal tracking-normal leading-normal mt-4 text-zinc-600 dark:text-zinc-400 max-w-[560px]">
-                CSE graduate, cybersecurity research trainee, and builder of cloud-native systems. I bridge <span className="text-zinc-900 dark:text-white font-medium">security, audit & engineering</span> — from threat recon to production microservices.
+              <span className="block text-[15px] sm:text-[17px] md:text-[18px] font-sans font-normal tracking-normal leading-relaxed mt-4 text-zinc-600 dark:text-zinc-400 max-w-[560px]">
+                CSE graduate from Jagannath University — <span className="text-zinc-900 dark:text-white font-medium">AI/ML & LLM enthusiast, web & Python builder</span>. Fast learner, analytical perfectionist who <em className="not-italic font-medium text-zinc-900 dark:text-white">never leaves a job half-done</em> — I love to lead, experiment and explore new tech.
               </span>
             </motion.h1>
 
-            <div className="mt-6 h-8 flex items-center gap-2 font-mono text-sm">
-              <span className="text-zinc-400">I am a</span>
-              <span className="px-3 py-1 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black font-medium">{typing}<span className="animate-pulse">|</span></span>
+            <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2 font-mono text-xs sm:text-sm">
+              <span className="text-zinc-400">I build in</span>
+              <span className="px-3 py-1.5 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black font-medium max-w-[70vw] truncate">{typing}<span className="animate-pulse">|</span></span>
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a href="#projects" className="inline-flex items-center gap-2 px-6 h-11 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black font-medium hover:opacity-90 transition">
+            <div className="mt-6 sm:mt-8 flex flex-wrap gap-2.5 sm:gap-3">
+              <a href="#projects" className="inline-flex items-center gap-2 px-5 sm:px-6 h-11 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black text-sm font-medium hover:opacity-90 transition">
                 View projects <ArrowUpRight size={16}/>
               </a>
-              <a href="#contact" className="inline-flex items-center gap-2 px-6 h-11 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 font-medium">
-                Contact me <Mail size={16}/>
+              <a href="#contact" className="inline-flex items-center gap-2 px-5 sm:px-6 h-11 rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-sm font-medium">
+                Contact <Mail size={16}/>
               </a>
-              <a href="https://github.com/Tertho1" target="_blank" className="w-11 h-11 grid place-items-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+              <a href="https://github.com/Tertho1" target="_blank" aria-label="GitHub" className="w-11 h-11 grid place-items-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shrink-0">
                 <Github size={18}/>
               </a>
-              <a href="https://linkedin.com/in/tertho-ghosh" target="_blank" className="w-11 h-11 grid place-items-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900">
+              <a href="https://linkedin.com/in/tertho-ghosh" target="_blank" aria-label="LinkedIn" className="w-11 h-11 grid place-items-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shrink-0">
                 <Linkedin size={18}/>
               </a>
             </div>
 
-            {/* stats */}
-            <div className="mt-10 grid grid-cols-3 divide-x divide-zinc-200 dark:divide-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900">
+            <div className="mt-8 sm:mt-10 grid grid-cols-3 divide-x divide-zinc-200 dark:divide-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900">
               {[
-                {k:'500+', v:'Problems solved', sub:'Codeforces Pupil'},
-                {k:'6 mo', v:'Cybersecurity Lab', sub:'ITRRC Founding cohort'},
-                {k:'3.88', v:'CGPA', sub:'Jagannath Univ • NDC 5.00'},
+                {k:'500+', v:'Problems', sub:'Codeforces Pupil'},
+                {k:'6 mo', v:'Cybersecurity', sub:'ITRRC Founding'},
+                {k:'3.88', v:'CGPA', sub:'JnU • NDC 5.00'},
               ].map(s=>(
-                <div key={s.k} className="px-4 md:px-6 py-5">
-                  <div className="font-display text-2xl font-semibold">{s.k}</div>
-                  <div className="text-xs font-medium text-zinc-900 dark:text-white">{s.v}</div>
-                  <div className="text-[11px] text-zinc-500">{s.sub}</div>
+                <div key={s.k} className="px-3 sm:px-6 py-4 sm:py-5 min-w-0">
+                  <div className="font-display text-xl sm:text-2xl font-semibold">{s.k}</div>
+                  <div className="text-[11px] sm:text-xs font-medium text-zinc-900 dark:text-white truncate">{s.v}</div>
+                  <div className="text-[10px] sm:text-[11px] text-zinc-500 truncate">{s.sub}</div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Right visual */}
-          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative">
-            {/* bento preview */}
-            <div className="rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 md:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-xs font-mono">
-                  <span className="w-3 h-3 rounded-full bg-red-400" />
-                  <span className="w-3 h-3 rounded-full bg-yellow-400" />
-                  <span className="w-3 h-3 rounded-full bg-green-400" />
-                  <span className="ml-2 text-zinc-500">tertho@portfolio — zsh</span>
+          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0">
+            <div className="rounded-[20px] sm:rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] overflow-hidden">
+              <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono min-w-0">
+                  <span className="w-3 h-3 rounded-full bg-red-400 shrink-0" />
+                  <span className="w-3 h-3 rounded-full bg-yellow-400 shrink-0" />
+                  <span className="w-3 h-3 rounded-full bg-green-400 shrink-0" />
+                  <span className="ml-1 sm:ml-2 text-zinc-500 truncate">tertho@portfolio — zsh</span>
                 </div>
-                <span className="text-[11px] px-2 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 font-mono">plagioscale.sh</span>
+                <span className="text-[10px] sm:text-[11px] px-2 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 font-mono shrink-0">projects/</span>
               </div>
-              <div className="mt-6 font-mono text-[12px] leading-5">
+              <div className="mt-5 sm:mt-6 font-mono text-[11px] sm:text-[12px] leading-5">
                 <div className="text-zinc-500">$ whoami</div>
-                <div>Tertho Ghosh — CSE • Security • Full-Stack</div>
-                <div className="text-zinc-500 mt-3">$ ls ~/projects</div>
+                <div className="font-medium">CSE Grad • AI/ML • Python • Web • QA</div>
+                <div className="text-zinc-500 mt-3">$ ls ~/projects --top 4</div>
                 <div className="grid grid-cols-2 gap-2 mt-2">
                   {projects.slice(0,4).map(p=>(
-                    <div key={p.id} className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-3 bg-zinc-50 dark:bg-zinc-800/50">
-                      <div className="font-semibold text-zinc-900 dark:text-white">{p.title}</div>
-                      <div className="text-[11px] text-zinc-500 line-clamp-1">{p.subtitle}</div>
+                    <div key={p.id} className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-2.5 sm:p-3 bg-zinc-50 dark:bg-zinc-800/50 min-w-0">
+                      <div className="font-semibold text-zinc-900 dark:text-white text-xs truncate">{p.title}</div>
+                      <div className="text-[10px] sm:text-[11px] text-zinc-500 truncate">{p.subtitle}</div>
                     </div>
                   ))}
                 </div>
-                <div className="mt-4 flex items-center gap-2">
-                  <span className="px-2 py-1 rounded bg-emerald-500 text-white text-[11px]">● live</span>
-                  <span className="text-zinc-500">Monitoring: Prometheus + Grafana</span>
+                <div className="mt-4 flex flex-wrap items-center gap-2">
+                  <span className="px-2 py-1 rounded bg-emerald-500 text-white text-[11px]">● open to collaborate</span>
+                  <span className="text-zinc-500 text-[11px]">Perfectionist • Ships complete</span>
                 </div>
                 <div className="mt-3 h-2 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
-                  <motion.div initial={{width: '20%'}} animate={{width: '78%'}} transition={{duration:1.2, delay:0.5}} className="h-full bg-zinc-900 dark:bg-white" />
+                  <motion.div initial={{width: '20%'}} animate={{width: '82%'}} transition={{duration:1.2, delay:0.5}} className="h-full bg-zinc-900 dark:bg-white" />
                 </div>
               </div>
-              <div className="mt-6 grid grid-cols-3 gap-2">
-                <a href="mailto:terthoghosh1@gmail.com" className="col-span-2 flex items-center justify-center gap-2 h-10 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black text-sm font-medium">
-                  <Mail size={14}/> terthoghosh1@gmail.com
+              <div className="mt-5 sm:mt-6 flex gap-2">
+                <a href="mailto:terthoghosh1@gmail.com" className="flex-1 flex items-center justify-center gap-2 h-10 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black text-xs sm:text-sm font-medium min-w-0 px-2">
+                  <Mail size={14} className="shrink-0"/><span className="truncate">terthoghosh1@gmail.com</span>
                 </a>
                 <button onClick={()=>{
                   navigator.clipboard.writeText('terthoghosh1@gmail.com'); setCopied(true); setTimeout(()=>setCopied(false),1500)
-                }} className="h-10 grid place-items-center rounded-xl border border-zinc-200 dark:border-zinc-700">
+                }} aria-label="Copy email" className="w-10 h-10 grid place-items-center rounded-xl border border-zinc-200 dark:border-zinc-700 shrink-0">
                   {copied ? <Check size={16} className="text-emerald-600"/> : <Copy size={16}/>}
                 </button>
               </div>
-              <div className="mt-3 flex items-center gap-2 text-xs text-zinc-500">
-                <MapPin size={12}/> Dhaka • <Phone size={12}/> 01610-466644 • Open to IT Audit / GITC / Security roles
+              <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
+                <span className="inline-flex items-center gap-1"><MapPin size={12}/> Dhaka</span>
+                <span className="hidden sm:inline">•</span>
+                <span>Photo placeholder — add later</span>
               </div>
             </div>
-
-            {/* floating badge */}
             <motion.div animate={{y:[0, -6, 0]}} transition={{duration:4, repeat:Infinity, ease:'easeInOut'}} className="hidden md:flex absolute -bottom-4 -left-4 items-center gap-3 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg">
               <div className="w-10 h-10 rounded-xl bg-violet-600 grid place-items-center text-white"><Sparkles size={18}/></div>
               <div>
-                <div className="text-xs font-semibold">Beyond the CV</div>
-                <div className="text-[11px] text-zinc-500">Tell me your full story — I’ll showcase it here</div>
+                <div className="text-xs font-semibold">Fast learner • Analytical</div>
+                <div className="text-[11px] text-zinc-500">Leads, experiments, finishes</div>
               </div>
             </motion.div>
           </motion.div>
@@ -286,31 +356,30 @@ export default function App(){
       </section>
 
       {/* About */}
-      <section id="about" className="max-w-[1120px] mx-auto px-6 py-10">
-        <div className="grid lg:grid-cols-12 gap-6">
-          <div className="lg:col-span-7 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 md:p-8">
+      <section id="about" className="max-w-[1120px] mx-auto px-4 sm:px-6 py-8 sm:py-10">
+        <div className="grid lg:grid-cols-12 gap-5 sm:gap-6">
+          <div className="lg:col-span-7 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:p-8">
             <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-zinc-500"><span className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"/> About</div>
-            <h2 className="font-display text-[28px] font-semibold tracking-tight mt-3">Clean mind, sharp systems.</h2>
-            <p className="mt-3 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              Computer Science & Engineering graduate from Jagannath University (7th sem 3.88, 8th sem completed — final result Dec 2026). I love going deep into how things work — from OS privileges and TCP/IP to SBERT embeddings and audit controls.
-              This CV was tailored for an IT Audit role, but my story is wider: competitive programming (500+ problems, Codeforces Pupil), founding cohort at ITRRC Cybersecurity Research Lab, and shipping end-to-end products like <span className="font-medium text-zinc-900 dark:text-white">PlagioScale</span> and <span className="font-medium text-zinc-900 dark:text-white">CVInsight</span> — designed, built, tested, deployed, and monitored solo.
+            <h2 className="font-display text-[24px] sm:text-[28px] font-semibold tracking-tight mt-3">Perfectionist builder who ships.</h2>
+            <p className="mt-3 text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              CSE graduate from Jagannath University (3.88/4.00, 8th sem done — result Dec 2026; NDC 5.00, Lalmohan 5.00). I’m drawn to <span className="font-medium text-zinc-900 dark:text-white">AI, ML and LLMs</span>, plus web development, testing and everything Python. I’m a fast learner, analytical, and a self-described perfectionist — I don’t leave a job half-done. I love to lead, experiment and explore new tech until it’s truly understood.
             </p>
-            <p className="mt-3 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              I’ve also led people and money: 6-member finance team at TEDxJnU (500+ participants) and treasurer at IEEE JnU. I document obsessively, test thoroughly, and care about audit trails, evidence, and controls — whether it’s GITC, change management, or just clean code.
+            <p className="mt-3 text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
+              That mindset shows: founding cohort at ITRRC Cybersecurity Lab, solo shipping of <span className="font-medium text-zinc-900 dark:text-white">PlagioScale</span> & <span className="font-medium text-zinc-900 dark:text-white">CVInsight</span> end-to-end, plus deep dives like <span className="font-medium text-zinc-900 dark:text-white">MentalQLM</span> (dual-LoRA LLM). I document, test and audit like a habit — whether it’s GITC-style evidence or just clean code.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
-              {['IT Audit','GITC','Risk & Controls','Network Security','Cloud Native','ML/NLP'].map(t=>(
+              {['AI/ML','LLMs & LoRA','Python','Web Dev','QA & Testing','Leadership','Experimentation'].map(t=>(
                 <span key={t} className="px-3 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs font-medium border border-zinc-200 dark:border-zinc-700">{t}</span>
               ))}
             </div>
           </div>
-          <div className="lg:col-span-5 space-y-6">
+          <div className="lg:col-span-5 space-y-5 sm:space-y-6">
             <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-zinc-900 text-white p-6 relative overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-violet-600/20 via-transparent to-emerald-500/20" />
               <div className="relative">
                 <div className="flex items-center gap-2 text-xs font-mono text-zinc-400"><Lock size={12}/> Availability</div>
-                <div className="mt-2 font-display text-xl">Open to entry-level IT Audit / GITC / Security roles</div>
-                <div className="mt-2 text-sm text-zinc-300">Based in Dhaka — open to on-site / hybrid. Also building freelance security & web projects.</div>
+                <div className="mt-2 font-display text-xl leading-tight">Open to AI/ML, Python, Web & Security roles</div>
+                <div className="mt-2 text-sm text-zinc-300 leading-relaxed">Dhaka-based. Fast learner, analytical, loves leading & experimenting. Let’s build something you’re proud to audit.</div>
                 <a href="#contact" className="mt-4 inline-flex items-center gap-2 px-4 h-10 rounded-full bg-white text-black text-sm font-medium">Let’s talk <ChevronRight size={14}/></a>
               </div>
             </div>
@@ -319,15 +388,15 @@ export default function App(){
               <div className="mt-3 space-y-3 text-sm">
                 <div>
                   <div className="font-medium">B.Sc. CSE — Jagannath University</div>
-                  <div className="text-zinc-500">2026 • 3.88/4.00 • 8th sem completed</div>
+                  <div className="text-zinc-500 text-xs">2026 • 3.88/4.00 • 8th sem completed</div>
                 </div>
                 <div>
                   <div className="font-medium">HSC — Notre Dame College, Dhaka</div>
-                  <div className="text-zinc-500">2020 • GPA 5.00</div>
+                  <div className="text-zinc-500 text-xs">2020 • GPA 5.00</div>
                 </div>
                 <div>
                   <div className="font-medium">SSC — Lalmohan Secondary School, Bhola</div>
-                  <div className="text-zinc-500">2018 • GPA 5.00</div>
+                  <div className="text-zinc-500 text-xs">2018 • GPA 5.00</div>
                 </div>
               </div>
             </div>
@@ -336,18 +405,18 @@ export default function App(){
       </section>
 
       {/* Skills */}
-      <section id="skills" className="max-w-[1120px] mx-auto px-6 py-6">
-        <div className="flex items-end justify-between gap-4">
-          <h2 className="font-display text-2xl font-semibold tracking-tight">Capabilities</h2>
-          <span className="text-xs font-mono text-zinc-500">Hover to explore • Minimal, not junior</span>
+      <section id="skills" className="max-w-[1120px] mx-auto px-4 sm:px-6 py-6">
+        <div className="flex flex-wrap items-end justify-between gap-3">
+          <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight">Capabilities</h2>
+          <span className="text-xs font-mono text-zinc-500">Hover to explore • Professional palette</span>
         </div>
-        <div className="mt-6 grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-6 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {skills.map(s=>(
-            <motion.div key={s.group} whileHover={{y:-4}} className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5">
+            <motion.div key={s.group} whileHover={{y:-3}} className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5">
               <div className="w-10 h-10 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center">
                 <s.icon size={18}/>
               </div>
-              <div className="mt-4 font-medium">{s.group}</div>
+              <div className="mt-4 font-medium text-sm">{s.group}</div>
               <div className="mt-3 flex flex-wrap gap-1.5">
                 {s.items.map(i=>(
                   <span key={i} className="px-2 py-1 rounded-full bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-[11px] font-medium">{i}</span>
@@ -356,97 +425,135 @@ export default function App(){
             </motion.div>
           ))}
         </div>
-        <div className="mt-4 rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 p-4 flex flex-wrap items-center gap-3 text-xs">
-          <span className="font-mono text-zinc-500">IT Audit interests:</span>
-          {['IT Audit','GITC','Access Controls','Change Management','IT Operations','Audit Evidence','Control Testing'].map(t=>(
-            <span key={t} className="px-2.5 py-1 rounded-full bg-amber-50 dark:bg-amber-950 border border-amber-200 dark:border-amber-900 text-amber-800 dark:text-amber-200">{t}</span>
+        <div className="mt-4 rounded-2xl border border-dashed border-zinc-300 dark:border-zinc-700 p-3 sm:p-4 flex flex-wrap items-center gap-2 text-xs">
+          <span className="font-mono text-zinc-500 shrink-0">Interests:</span>
+          {['AI','LLMs','Web Dev','Python','Testing','Cloud Native','Security','Automation'].map(t=>(
+            <span key={t} className="px-2.5 py-1 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700">{t}</span>
           ))}
         </div>
       </section>
 
       {/* Projects */}
-      <section id="projects" className="max-w-[1120px] mx-auto px-6 py-10">
-        <div className="flex flex-wrap items-end justify-between gap-4">
+      <section id="projects" className="max-w-[1120px] mx-auto px-4 sm:px-6 py-8 sm:py-10">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
           <div>
-            <h2 className="font-display text-2xl font-semibold tracking-tight">Selected work</h2>
-            <p className="text-sm text-zinc-500 mt-1">Real systems, shipped end-to-end — not tutorials. Click for details.</p>
+            <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight">Selected work</h2>
+            <p className="text-sm text-zinc-500 mt-1">Real systems from GitHub + D:\Projects — audited, not forked. Filter & click for details.</p>
           </div>
-          <div className="flex items-center gap-2 p-1 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800">
-            {['All','Featured','FastAPI','React','Python'].map(f=>(
-              <button key={f} onClick={()=>setFilter(f)} className={`px-4 h-8 rounded-full text-xs font-medium transition ${filter===f ? 'bg-zinc-900 dark:bg-white text-white dark:text-black' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'}`}>{f}</button>
+          <div className="flex items-center gap-1 p-1 rounded-full bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 overflow-x-auto max-w-full">
+            {['All','Featured','AI/ML','LLM','Python','Backend'].map(f=>(
+              <button key={f} onClick={()=>setFilter(f)} className={`px-3 sm:px-4 h-8 rounded-full text-xs font-medium transition whitespace-nowrap shrink-0 ${filter===f ? 'bg-zinc-900 dark:bg-white text-white dark:text-black shadow' : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900'}`}>{f}</button>
             ))}
           </div>
         </div>
 
-        <div className="mt-6 grid md:grid-cols-2 gap-5">
+        <div className="mt-6 grid md:grid-cols-2 gap-4 sm:gap-5">
           {filtered.map(p=>(
-            <motion.div key={p.id} layout initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} whileHover={{y:-4}} className="group relative rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden cursor-pointer" onClick={()=>setSelected(p)}>
+            <motion.div key={p.id} layout initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} whileHover={{y:-4}} className="group relative rounded-[20px] sm:rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden cursor-pointer flex flex-col" onClick={()=>setSelected(p)}>
               <div className={`h-1 w-full ${p.highlight ? 'bg-gradient-to-r from-violet-600 to-emerald-500' : 'bg-zinc-200 dark:bg-zinc-800'}`} />
-              <div className="p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex gap-4">
-                    <div className="w-12 h-12 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center font-mono font-bold text-sm">{p.image}</div>
-                    <div>
-                      <div className="font-semibold leading-tight">{p.title}</div>
-                      <div className="text-xs text-zinc-500">{p.subtitle}</div>
-                      <div className="mt-1 text-[11px] font-mono text-emerald-600 dark:text-emerald-400">{p.stats}</div>
+              <div className="p-5 sm:p-6 flex-1 flex flex-col">
+                <div className="flex items-start justify-between gap-3">
+                  <div className="flex gap-3 sm:gap-4 min-w-0 flex-1">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center font-mono font-bold text-xs sm:text-sm shrink-0">{p.image}</div>
+                    <div className="min-w-0 flex-1">
+                      <div className="font-semibold leading-tight text-sm sm:text-base truncate pr-2">{p.title}</div>
+                      <div className="text-xs text-zinc-500 line-clamp-1">{p.subtitle}</div>
+                      <div className="mt-1 text-[11px] font-mono text-emerald-600 dark:text-emerald-400 truncate">{p.stats}</div>
                     </div>
                   </div>
-                  <ArrowUpRight size={16} className="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition" />
+                  <ArrowUpRight size={16} className="text-zinc-400 group-hover:text-zinc-900 dark:group-hover:text-white transition shrink-0 mt-1" />
                 </div>
-                <p className="mt-4 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{p.desc}</p>
+                <p className="mt-3 sm:mt-4 text-[13px] sm:text-sm leading-relaxed text-zinc-600 dark:text-zinc-400 line-clamp-3 flex-1">{p.desc}</p>
                 <div className="mt-4 flex flex-wrap gap-1.5">
-                  {p.stack.map(s=> <span key={s} className="px-2 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[11px] border border-zinc-200 dark:border-zinc-700">{s}</span>)}
+                  {p.stack.slice(0,5).map(s=> <span key={s} className="px-2 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-[11px] border border-zinc-200 dark:border-zinc-700">{s}</span>)}
+                  {p.stack.length>5 && <span className="px-2 py-1 text-[11px] text-zinc-500">+{p.stack.length-5}</span>}
                 </div>
                 <div className="mt-4 flex gap-2">
-                  {p.links.github && <span className="inline-flex items-center gap-1.5 px-3 h-8 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black text-xs"><Github size={12}/> GitHub</span>}
-                  {p.links.demo && <span className="inline-flex items-center gap-1.5 px-3 h-8 rounded-full border border-zinc-200 dark:border-zinc-700 text-xs"><ExternalLink size={12}/> Live</span>}
+                  {p.links.github && <span className="inline-flex items-center gap-1.5 px-3 h-7 sm:h-8 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black text-xs"><Github size={12}/> GitHub</span>}
+                  {p.links.demo && <span className="inline-flex items-center gap-1.5 px-3 h-7 sm:h-8 rounded-full border border-zinc-200 dark:border-zinc-700 text-xs"><ExternalLink size={12}/> Live</span>}
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
 
-        <div className="mt-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 p-4 flex flex-wrap items-center justify-between gap-3">
-          <div className="text-sm"><span className="font-medium">Want the full story?</span> <span className="text-zinc-500">Your CV was tailored for one role — this portfolio can tell the rest.</span></div>
-          <a href="#contact" className="px-4 h-9 inline-flex items-center gap-2 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 text-sm font-medium">Tell me more <ChevronRight size={14}/></a>
+        {/* More builds */}
+        <div className="mt-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900 overflow-hidden">
+          <button onClick={()=>setShowMore(!showMore)} className="w-full flex items-center justify-between gap-3 p-4 text-left">
+            <div>
+              <div className="text-sm font-medium">More builds from D:\Projects & GitHub ({moreBuilds.length})</div>
+              <div className="text-xs text-zinc-500">Scrap filtered out — these are real. Click to expand.</div>
+            </div>
+            <span className={`w-8 h-8 rounded-full bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 grid place-items-center transition ${showMore ? 'rotate-180':''}`}><ChevronRight size={16}/></span>
+          </button>
+          <AnimatePresence>
+            {showMore && (
+              <motion.div initial={{height:0}} animate={{height:'auto'}} exit={{height:0}} className="overflow-hidden border-t border-zinc-200 dark:border-zinc-800">
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 p-4">
+                  {moreBuilds.map(b=>(
+                    <div key={b.name} className="rounded-xl bg-white dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 p-3">
+                      <div className="text-xs font-semibold truncate">{b.name}</div>
+                      <div className="text-[11px] text-violet-600 dark:text-violet-400">{b.tech}</div>
+                      <div className="text-[11px] text-zinc-500 line-clamp-1">{b.note}</div>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 
-      {/* Experience */}
-      <section id="experience" className="max-w-[1120px] mx-auto px-6 py-6">
-        <h2 className="font-display text-2xl font-semibold tracking-tight">Experience & Leadership</h2>
-        <div className="mt-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-6">
+      {/* Experience + Volunteering */}
+      <section id="experience" className="max-w-[1120px] mx-auto px-4 sm:px-6 py-6">
+        <h2 className="font-display text-xl sm:text-2xl font-semibold tracking-tight">Experience & Volunteering</h2>
+        <div className="mt-6 grid lg:grid-cols-[1.1fr_0.9fr] gap-5 sm:gap-6">
           <div className="space-y-4">
             {experiences.map(e=>(
-              <div key={e.org} className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 relative">
+              <div key={e.org} className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 relative">
                 {e.current && <span className="absolute top-4 right-4 text-[10px] tracking-widest font-mono px-2 py-1 rounded-full bg-emerald-500 text-white">CURRENT</span>}
-                <div className="flex items-center gap-3 text-xs font-mono text-zinc-500"><Briefcase size={12}/> {e.period}</div>
-                <div className="mt-2 font-semibold">{e.role}</div>
+                <div className="flex items-center gap-2 text-xs font-mono text-zinc-500"><Briefcase size={12}/> {e.period}</div>
+                <div className="mt-2 font-semibold text-sm sm:text-base pr-16">{e.role}</div>
                 <div className="text-sm text-zinc-500">{e.org}</div>
-                <ul className="mt-3 space-y-1.5 text-sm text-zinc-600 dark:text-zinc-400 list-disc pl-5">
+                <ul className="mt-3 space-y-1.5 text-[13px] sm:text-sm text-zinc-600 dark:text-zinc-400 list-disc pl-5">
                   {e.bullets.map(b=> <li key={b}>{b}</li>)}
                 </ul>
               </div>
             ))}
+            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6">
+              <div className="flex items-center gap-2 text-xs font-mono text-zinc-500"><HeartHandshake size={14}/> Volunteering & Leadership</div>
+              <div className="mt-3 space-y-3">
+                {volunteering.slice(0,4).map(v=>(
+                  <div key={v.title} className="flex gap-2 text-sm">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white shrink-0"/>
+                    <span><span className="font-medium">{v.title}</span><span className="text-zinc-500"> — {v.desc}</span></span>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-4 pt-4 border-t border-zinc-100 dark:border-zinc-800 space-y-2 text-sm text-zinc-600 dark:text-zinc-400">
+                <div className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-zinc-300 mt-1.5 shrink-0"/> JnU AI & IT Fest — Volunteer</div>
+                <div className="flex gap-2"><span className="w-1.5 h-1.5 rounded-full bg-zinc-300 mt-1.5 shrink-0"/> IEEE JnU events & other volunteering</div>
+              </div>
+            </div>
           </div>
           <div className="space-y-4">
-            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6">
-              <div className="flex items-center gap-2 text-xs font-mono text-zinc-500"><Award size={14}/> Certifications & Activities</div>
+            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6">
+              <div className="flex items-center gap-2 text-xs font-mono text-zinc-500"><Award size={14}/> Competitive & Events</div>
               <ul className="mt-3 space-y-2 text-sm">
-                <li className="flex gap-2"><span className="mt-1 w-1.5 h-1.5 rounded-full bg-violet-600 shrink-0"/> Cisco Intro to Cybersecurity — Networking Academy</li>
-                <li className="flex gap-2"><span className="mt-1 w-1.5 h-1.5 rounded-full bg-zinc-400 shrink-0"/> ICPC 2024 — DIU • IUPC KUET & AUST 2025</li>
-                <li className="flex gap-2"><span className="mt-1 w-1.5 h-1.5 rounded-full bg-zinc-400 shrink-0"/> PTIB Civic Tech, Sustainovate & other tech programs</li>
+                <li className="flex gap-2"><span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-violet-600 shrink-0"/> Cisco Intro to Cybersecurity — Networking Academy</li>
+                <li className="flex gap-2"><span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-zinc-400 shrink-0"/> ICPC 2024 — DIU • IUPC KUET & AUST 2025</li>
+                <li className="flex gap-2"><span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-zinc-400 shrink-0"/> PTIB Civic Tech, Sustainovate & hackathons</li>
+                <li className="flex gap-2"><span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-zinc-400 shrink-0"/> 500+ problems — Codeforces Pupil</li>
               </ul>
               <div className="mt-4 grid grid-cols-3 gap-2 text-center">
                 {[
                   {n:'Codeforces', v:'Pupil'},
                   {n:'Problems', v:'500+'},
-                  {n:'Stacks', v:'Full-stack'},
+                  {n:'Focus', v:'AI/Web/QA'},
                 ].map(s=>(
-                  <div key={s.n} className="rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 py-3">
-                    <div className="text-xs text-zinc-500">{s.n}</div>
-                    <div className="text-sm font-semibold">{s.v}</div>
+                  <div key={s.n} className="rounded-xl bg-zinc-50 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 py-3 px-1">
+                    <div className="text-[11px] text-zinc-500">{s.n}</div>
+                    <div className="text-sm font-semibold truncate">{s.v}</div>
                   </div>
                 ))}
               </div>
@@ -459,32 +566,35 @@ export default function App(){
                 ))}
               </div>
             </div>
+            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5">
+              <div className="text-xs font-mono text-zinc-500 flex items-center gap-2"><Cpu size={14}/> About the palette — “Accent”</div>
+              <p className="mt-2 text-xs leading-relaxed text-zinc-600 dark:text-zinc-400">
+                <span className="font-medium text-zinc-900 dark:text-white">Accent</span> = the one highlight color used for CTAs, gradients and active states. Here it’s a restrained <span className="inline-flex items-center gap-1"><span className="w-2.5 h-2.5 rounded-full bg-violet-600"/> violet → emerald</span> on a zinc/white base — professional, not flashy. It keeps the site minimal and lets your work be judged, not the colors. Fully responsive: tested from 320px to 1440px, no overflow.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Contact */}
-      <section id="contact" className="max-w-[1120px] mx-auto px-6 py-10">
-        <div className="rounded-[32px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 md:p-10">
-          <div className="grid lg:grid-cols-2 gap-8 items-center">
+      {/* Contact - professional, no phone */}
+      <section id="contact" className="max-w-[1120px] mx-auto px-4 sm:px-6 py-8 sm:py-10">
+        <div className="rounded-[24px] sm:rounded-[32px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 md:p-10">
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-zinc-500"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"/> Contact</div>
-              <h2 className="font-display text-3xl font-semibold tracking-tight mt-3">Let’s build something secure — and auditable.</h2>
-              <p className="mt-3 text-zinc-600 dark:text-zinc-400">I’m exploring IT Audit / GITC / IT Risk & Security roles, but also open to freelance product builds. Fast replies on email.</p>
+              <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight mt-3 leading-tight">Let’s build something<br/>you’re proud to ship.</h2>
+              <p className="mt-3 text-sm sm:text-[15px] text-zinc-600 dark:text-zinc-400 leading-relaxed">Perfectionist, fast learner, analytical — I explore until it’s complete. Reach me professionally via email or the form. I reply fast. No phone exposed — your privacy & mine.</p>
               <div className="mt-6 space-y-3 text-sm">
                 <a href="mailto:terthoghosh1@gmail.com" className="flex items-center gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition">
-                  <span className="w-9 h-9 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center"><Mail size={16}/></span>
-                  <span><span className="font-medium">terthoghosh1@gmail.com</span><span className="block text-xs text-zinc-500">Email — best way to reach</span></span>
+                  <span className="w-9 h-9 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center shrink-0"><Mail size={16}/></span>
+                  <span className="min-w-0"><span className="font-medium truncate block">terthoghosh1@gmail.com</span><span className="block text-xs text-zinc-500">Professional inbox — preferred</span></span>
                 </a>
-                <div className="grid grid-cols-2 gap-3">
-                  <a href="tel:01610466644" className="flex items-center gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800">
-                    <Phone size={16}/> 01610-466644
-                  </a>
-                  <div className="flex items-center gap-2 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800"><MapPin size={16}/> Dhaka, Bangladesh</div>
+                <div className="flex items-center gap-2 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 text-sm bg-zinc-50 dark:bg-zinc-800/50">
+                  <MapPin size={16} className="shrink-0 text-zinc-500"/> <span>Dhaka, Bangladesh</span> <span className="text-zinc-300">•</span> <span className="text-zinc-500 text-xs">Open to remote / hybrid</span>
                 </div>
-                <div className="flex gap-2">
-                  <a href="https://github.com/Tertho1" target="_blank" className="flex-1 h-10 rounded-xl border border-zinc-200 dark:border-zinc-800 grid place-items-center gap-2 flex items-center justify-center text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"><Github size={16}/> GitHub</a>
-                  <a href="https://linkedin.com/in/tertho-ghosh" target="_blank" className="flex-1 h-10 rounded-xl bg-[#0A66C2] text-white grid place-items-center flex items-center justify-center gap-2 text-sm font-medium"><Linkedin size={16}/> LinkedIn</a>
+                <div className="grid grid-cols-2 gap-3">
+                  <a href="https://github.com/Tertho1" target="_blank" className="h-10 rounded-xl border border-zinc-200 dark:border-zinc-800 flex items-center justify-center gap-2 text-sm font-medium hover:bg-zinc-50 dark:hover:bg-zinc-800"><Github size={16}/> GitHub</a>
+                  <a href="https://linkedin.com/in/tertho-ghosh" target="_blank" className="h-10 rounded-xl bg-[#0A66C2] text-white flex items-center justify-center gap-2 text-sm font-medium hover:opacity-90"><Linkedin size={16}/> LinkedIn</a>
                 </div>
               </div>
             </div>
@@ -492,47 +602,48 @@ export default function App(){
               e.preventDefault()
               const fd = new FormData(e.currentTarget)
               const subject = encodeURIComponent(`Portfolio inquiry from ${fd.get('name')}`)
-              const body = encodeURIComponent(`From: ${fd.get('name')} <${fd.get('email')}>\n\n${fd.get('message')}`)
+              const body = encodeURIComponent(`From: ${fd.get('name')} <${fd.get('email')}>\n\n${fd.get('message')}\n\n— via tertho portfolio`)
               window.location.href = `mailto:terthoghosh1@gmail.com?subject=${subject}&body=${body}`
-            }} className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 p-6">
+            }} className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 p-5 sm:p-6">
               <div className="text-sm font-medium">Send a message</div>
-              <div className="text-xs text-zinc-500">Opens your email client — no backend needed (works on GitHub Pages).</div>
+              <div className="text-xs text-zinc-500">Professional contact — opens your email client. Works on GitHub Pages, no backend.</div>
               <div className="mt-4 grid gap-3">
-                <input name="name" required placeholder="Your name" className="h-11 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-zinc-900/10" />
-                <input name="email" required type="email" placeholder="Your email" className="h-11 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-zinc-900/10" />
-                <textarea name="message" required rows={4} placeholder="Tell me about the role / project..." className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-zinc-900/10" />
-                <button type="submit" className="h-11 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-medium hover:opacity-90 transition">Send email →</button>
-                <div className="text-[11px] text-zinc-500 text-center">Or copy email <button type="button" onClick={()=>{
+                <input name="name" required placeholder="Your name" autoComplete="name" className="h-11 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-sm" />
+                <input name="email" required type="email" placeholder="Your email" autoComplete="email" className="h-11 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-sm" />
+                <textarea name="message" required rows={4} placeholder="Tell me about the role / project — goals, timeline, what you need..." className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-sm resize-y min-h-[110px]" />
+                <button type="submit" className="h-11 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-medium hover:opacity-90 transition text-sm">Send via email →</button>
+                <div className="text-[11px] text-zinc-500 text-center leading-relaxed">Or copy: <button type="button" onClick={()=>{
                     navigator.clipboard.writeText('terthoghosh1@gmail.com'); setCopied(true); setTimeout(()=>setCopied(false),1500)
-                  }} className="underline">{copied ? 'copied!' : 'terthoghosh1@gmail.com'}</button></div>
+                  }} className="underline decoration-dotted underline-offset-4 font-mono">{copied ? 'copied ✓' : 'terthoghosh1@gmail.com'}</button></div>
               </div>
             </form>
           </div>
         </div>
         <footer className="mt-8 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-zinc-500 border-t border-zinc-200 dark:border-zinc-800 pt-6">
-          <span>© {new Date().getFullYear()} Tertho Ghosh • Built with React + Tailwind • Clean, minimal, auditable.</span>
+          <span className="text-center md:text-left">© {new Date().getFullYear()} Tertho Ghosh • CSE JnU • AI/ML • Python • Web • QA — Clean, responsive, auditable.</span>
           <span className="flex items-center gap-4">
-            <a href="#" className="hover:text-zinc-900 dark:hover:text-white">Back to top ↑</a>
-            <a href="/Tertho_Ghosh_CV.pdf" className="hover:text-zinc-900 dark:hover:text-white">Download CV</a>
+            <a href="#" className="hover:text-zinc-900 dark:hover:text-white">Top ↑</a>
+            <a href="/Tertho_Ghosh_CV.pdf" className="hover:text-zinc-900 dark:hover:text-white">CV</a>
           </span>
         </footer>
       </section>
 
-      {/* Project modal */}
+      {/* Modal */}
       <AnimatePresence>
         {selected && (
-          <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-[70] p-4 md:p-6 grid place-items-center">
+          <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-[70] p-4 grid place-items-center">
             <div onClick={()=>setSelected(null)} className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
-            <motion.div initial={{y:12, opacity:0}} animate={{y:0, opacity:1}} exit={{y:12, opacity:0}} className="relative w-full max-w-[720px] rounded-[24px] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 overflow-hidden max-h-[90vh] overflow-y-auto">
+            <motion.div initial={{y:12, opacity:0}} animate={{y:0, opacity:1}} exit={{y:12, opacity:0}} className="relative w-full max-w-[720px] rounded-[24px] bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 overflow-hidden max-h-[90vh] overflow-y-auto shadow-2xl">
               <div className="h-1 bg-gradient-to-r from-violet-600 to-emerald-500" />
-              <button onClick={()=>setSelected(null)} className="absolute top-4 right-4 w-9 h-9 grid place-items-center rounded-full bg-zinc-100 dark:bg-zinc-800"><X size={16}/></button>
-              <div className="p-6 md:p-8">
+              <button onClick={()=>setSelected(null)} className="absolute top-4 right-4 w-9 h-9 grid place-items-center rounded-full bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition"><X size={16}/></button>
+              <div className="p-6 sm:p-8">
                 <div className="w-14 h-14 rounded-2xl bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center font-mono font-bold">{selected.image}</div>
-                <h3 className="mt-4 font-display text-2xl font-semibold">{selected.title}</h3>
+                <h3 className="mt-4 font-display text-xl sm:text-2xl font-semibold">{selected.title}</h3>
                 <div className="text-sm text-zinc-500">{selected.subtitle}</div>
+                <div className="mt-2 text-[11px] font-mono text-emerald-600 dark:text-emerald-400">{selected.stats}</div>
                 <p className="mt-4 text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">{selected.desc}</p>
                 <div className="mt-4 flex flex-wrap gap-1.5">{selected.stack.map(s=> <span key={s} className="px-2.5 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 text-xs border border-zinc-200 dark:border-zinc-700">{s}</span>)}</div>
-                <div className="mt-6 flex gap-2">
+                <div className="mt-6 flex flex-wrap gap-2">
                   {selected.links.github && <a href={selected.links.github} target="_blank" className="px-5 h-10 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black inline-flex items-center gap-2 text-sm font-medium"><Github size={16}/> GitHub</a>}
                   {selected.links.demo && <a href={selected.links.demo} target="_blank" className="px-5 h-10 rounded-full border border-zinc-200 dark:border-zinc-700 inline-flex items-center gap-2 text-sm font-medium"><ExternalLink size={16}/> Live demo</a>}
                 </div>
@@ -542,10 +653,9 @@ export default function App(){
         )}
       </AnimatePresence>
 
-      {/* Floating quick actions */}
-      <div className="fixed bottom-4 right-4 hidden md:flex items-center gap-2">
+      <div className="fixed bottom-4 right-4 hidden md:flex items-center gap-2 z-40">
         <a href="https://github.com/Tertho1" target="_blank" className="w-10 h-10 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 grid place-items-center shadow-lg hover:scale-105 transition"><Github size={16}/></a>
-        <a href="mailto:terthoghosh1@gmail.com" className="px-4 h-10 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black inline-flex items-center gap-2 text-sm font-medium shadow-lg"><Mail size={14}/> Hire me</a>
+        <a href="#contact" className="px-4 h-10 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black inline-flex items-center gap-2 text-sm font-medium shadow-lg"><Mail size={14}/> Contact</a>
       </div>
     </div>
   )
