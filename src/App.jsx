@@ -262,8 +262,8 @@ export default function App(){
             <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} className="inline-flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-mono px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Dhaka, Bangladesh • JnU CSE ’26 • 3.88 / 4.00
             </motion.div>
-            <motion.h1 initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.05}} className="font-display font-semibold tracking-[-0.04em] leading-[0.9] text-[38px] sm:text-[48px] md:text-[60px] mt-5 sm:mt-6">
-              Tertho<br/>Ghosh
+            <motion.h1 initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.05}} className="font-display font-semibold tracking-[-0.04em] leading-[0.9] text-[38px] sm:text-[48px] md:text-[60px] mt-5 sm:mt-6 whitespace-nowrap">
+              Tertho Ghosh
               <span className="block text-[15px] sm:text-[17px] md:text-[18px] font-sans font-normal tracking-normal leading-relaxed mt-4 text-zinc-600 dark:text-zinc-400 max-w-[560px]">
                 CSE graduate from Jagannath University — <span className="text-zinc-900 dark:text-white font-medium">AI/ML & LLM enthusiast, web & Python builder</span>. Fast learner, analytical perfectionist who <em className="not-italic font-medium text-zinc-900 dark:text-white">never leaves a job half-done</em> — I love to lead, experiment and explore new tech.
               </span>
@@ -304,7 +304,7 @@ export default function App(){
             </div>
           </div>
 
-          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0 pb-10">
+          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0 pb-16">
             <div className="rounded-[20px] sm:rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] overflow-hidden">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono min-w-0">
@@ -351,7 +351,7 @@ export default function App(){
                 <span>Photo placeholder — add later</span>
               </div>
             </div>
-            <motion.div animate={{y:[0, -6, 0]}} transition={{duration:4, repeat:Infinity, ease:'easeInOut'}} className="hidden lg:flex absolute bottom-0 left-4 items-center gap-3 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg translate-y-2">
+            <motion.div animate={{y:[0, -6, 0]}} transition={{duration:4, repeat:Infinity, ease:'easeInOut'}} className="hidden lg:flex absolute bottom-2 left-4 items-center gap-3 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg">
               <div className="w-10 h-10 rounded-xl bg-violet-600 grid place-items-center text-white"><Sparkles size={18}/></div>
               <div>
                 <div className="text-xs font-semibold">Fast learner • Analytical</div>
