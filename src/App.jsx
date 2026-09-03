@@ -6,11 +6,11 @@ import {
   Briefcase, Layers, Copy, Check, Download, Menu, ChevronRight, Terminal, Lock, Cpu, Search, HeartHandshake
 } from 'lucide-react'
 
-const Github = (props) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.26.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8a9.56 9.56 0 0 1 2.5.34c1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85v2.74c0 .26.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
+const Github = ({ size = 18, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.69c-2.77.6-3.36-1.34-3.36-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.52 2.34 1.08 2.91.83.09-.65.35-1.08.63-1.33-2.22-.25-4.56-1.11-4.56-4.95 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.26.1-2.64 0 0 .84-.27 2.75 1.02A9.56 9.56 0 0 1 12 6.8a9.56 9.56 0 0 1 2.5.34c1.9-1.29 2.74-1.02 2.74-1.02.56 1.38.21 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.85-2.34 4.7-4.57 4.95.36.31.68.92.68 1.85v2.74c0 .26.18.58.69.48A10 10 0 0 0 12 2z"/></svg>
 )
-const Linkedin = (props) => (
-  <svg viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+const Linkedin = ({ size = 18, ...props }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="currentColor" {...props}><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
 )
 
 // Data - prioritized real projects (non-forked, non-scrap)
@@ -207,12 +207,19 @@ export default function App(){
 
   const filtered = filter==='All' ? projects : projects.filter(p=> p.stack.includes(filter) || p.category.includes(filter) || (filter==='Featured' && p.highlight))
 
+  const [showTop, setShowTop] = useState(false)
+  useEffect(()=>{
+    const onScroll = () => setShowTop(window.scrollY > 400)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => window.removeEventListener('scroll', onScroll)
+  },[])
+
   return (
-    <div className="min-h-screen relative overflow-x-hidden">
+    <div className="min-h-screen relative">
       <motion.div style={{ scaleX }} className="fixed top-0 left-0 right-0 h-[2px] bg-zinc-900 dark:bg-white origin-left z-[60]" />
 
-      {/* Nav - responsive, no overflow */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#fcfcf9]/80 dark:bg-[#0a0a0a]/80 border-b border-zinc-200/60 dark:border-zinc-800">
+      {/* Nav - fixed like friend's portfolio but with blur, always sticky */}
+      <header className="sticky top-0 z-50 backdrop-blur-xl bg-[#fcfcf9]/85 dark:bg-[#0a0a0a]/85 border-b border-zinc-200/60 dark:border-zinc-800 supports-[backdrop-filter]:bg-[#fcfcf9]/70">
         <div className="max-w-[1120px] mx-auto px-4 sm:px-6 h-[60px] sm:h-[64px] flex items-center justify-between gap-2">
           <a href="#" className="flex items-center gap-2 sm:gap-3 min-w-0">
             <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center font-mono text-[13px] font-bold shrink-0">TG</div>
@@ -654,9 +661,25 @@ export default function App(){
       </AnimatePresence>
 
       <div className="fixed bottom-4 right-4 hidden md:flex items-center gap-2 z-40">
-        <a href="https://github.com/Tertho1" target="_blank" className="w-10 h-10 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 grid place-items-center shadow-lg hover:scale-105 transition"><Github size={16}/></a>
+        <a href="https://github.com/Tertho1" target="_blank" aria-label="GitHub" className="w-10 h-10 rounded-full bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 grid place-items-center shadow-lg hover:scale-105 transition"><Github size={16}/></a>
         <a href="#contact" className="px-4 h-10 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black inline-flex items-center gap-2 text-sm font-medium shadow-lg"><Mail size={14}/> Contact</a>
       </div>
+
+      {/* Back to top - adopted from friend's portfolio but minimal zinc style */}
+      <AnimatePresence>
+        {showTop && (
+          <motion.button
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            aria-label="Back to top"
+            className="fixed bottom-4 left-4 md:bottom-6 md:left-6 w-11 h-11 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center shadow-lg border border-zinc-200 dark:border-zinc-800 z-40 hover:scale-105 transition"
+          >
+            <ChevronRight size={18} className="-rotate-90" />
+          </motion.button>
+        )}
+      </AnimatePresence>
     </div>
   )
 }
