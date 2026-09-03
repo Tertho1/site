@@ -259,15 +259,20 @@ export default function App(){
       <section ref={heroRef} className="max-w-[1120px] mx-auto px-4 sm:px-6 pt-8 sm:pt-12 md:pt-16 pb-8 sm:pb-12">
         <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-8 sm:gap-10 items-start">
           <div className="min-w-0">
-            <motion.div initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} className="inline-flex flex-wrap items-center gap-2 text-[11px] sm:text-xs font-mono px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Dhaka, Bangladesh • JnU CSE ’26 • 3.88 / 4.00
-            </motion.div>
-            <motion.h1 initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.05}} className="font-display font-semibold tracking-[-0.04em] leading-[0.9] text-[38px] sm:text-[48px] md:text-[60px] mt-5 sm:mt-6">
+            <motion.h1 initial={{opacity:0,y:12}} animate={{opacity:1,y:0}} transition={{delay:0.05}} className="font-display font-semibold tracking-[-0.04em] leading-[0.9] text-[38px] sm:text-[48px] md:text-[60px] mt-2 sm:mt-3">
               <span className="whitespace-nowrap">Tertho Ghosh</span>
               <span className="block text-[15px] sm:text-[17px] md:text-[18px] font-sans font-normal tracking-normal leading-relaxed mt-4 text-zinc-600 dark:text-zinc-400 max-w-[560px] whitespace-normal">
                 CSE graduate from Jagannath University — <span className="text-zinc-900 dark:text-white font-medium">AI/ML & LLM enthusiast, web & Python builder</span>. Fast learner, analytical perfectionist who <em className="not-italic font-medium text-zinc-900 dark:text-white">never leaves a job half-done</em> — I love to lead, experiment and explore new tech.
               </span>
             </motion.h1>
+
+            {/* Detailed intro meta - minimal with icons, under intro */}
+            <motion.div initial={{opacity:0,y:6}} animate={{opacity:1,y:0}} transition={{delay:0.12}} className="mt-5 flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-medium"><MapPin size={14} className="text-zinc-500"/> Dhaka, Bangladesh</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-medium"><GraduationCap size={14} className="text-zinc-500"/> Jagannath University — CSE ’26</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-medium"><Award size={14} className="text-zinc-500"/> CGPA 3.88 / 4.00</span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-xs font-medium"><span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"/> Available for roles</span>
+            </motion.div>
 
             <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2 font-mono text-xs sm:text-sm">
               <span className="text-zinc-400">I build in</span>
@@ -304,7 +309,17 @@ export default function App(){
             </div>
           </div>
 
-          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0">
+          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0 space-y-4">
+            {/* Photo — white background as requested for transparent PNG */}
+            <div className="rounded-[20px] sm:rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white p-2 sm:p-3 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+              <div className="rounded-xl bg-white overflow-hidden aspect-[4/4.8] grid place-items-center">
+                <img src="/photo.png" alt="Tertho Ghosh" className="w-full h-full object-cover object-top bg-white" loading="eager" />
+              </div>
+              <div className="px-2 pt-2 pb-1 flex items-center justify-between">
+                <span className="text-xs font-mono text-zinc-500">Tertho Ghosh • Dhaka</span>
+                <span className="text-[11px] px-2 py-1 rounded-full bg-zinc-900 text-white font-mono">photo.png</span>
+              </div>
+            </div>
             <div className="rounded-[20px] sm:rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] overflow-hidden">
               <div className="flex items-center justify-between gap-2">
                 <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono min-w-0">
