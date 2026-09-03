@@ -309,68 +309,23 @@ export default function App(){
             </div>
           </div>
 
-          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0 space-y-4">
-            {/* Photo — white background as requested for transparent PNG */}
-            <div className="rounded-[20px] sm:rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white p-2 sm:p-3 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-              <div className="rounded-xl bg-white overflow-hidden aspect-[4/4.8] grid place-items-center">
+          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0">
+            {/* Photo — white background as requested for transparent PNG — single hero visual, like leerob/antfu/rauno */}
+            <div className="rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white p-2 sm:p-3 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
+              <div className="rounded-[16px] bg-white overflow-hidden aspect-[4/5] grid place-items-center">
                 <img src="/photo.png" alt="Tertho Ghosh" className="w-full h-full object-cover object-top bg-white" loading="eager" />
               </div>
-              <div className="px-2 pt-2 pb-1 flex items-center justify-between">
-                <span className="text-xs font-mono text-zinc-500">Tertho Ghosh • Dhaka</span>
-                <span className="text-[11px] px-2 py-1 rounded-full bg-zinc-900 text-white font-mono">photo.png</span>
+              <div className="px-2 pt-3 pb-1 flex items-center justify-between">
+                <span className="text-xs font-mono text-zinc-500">Tertho Ghosh • Dhaka • JnU CSE</span>
+                <span className="hidden sm:inline text-[11px] px-2 py-1 rounded-full bg-zinc-900 text-white font-mono">Available</span>
               </div>
             </div>
-            <div className="rounded-[20px] sm:rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 sm:p-6 shadow-[0_20px_60px_rgba(0,0,0,0.08)] overflow-hidden">
-              <div className="flex items-center justify-between gap-2">
-                <div className="flex items-center gap-1.5 sm:gap-2 text-[11px] sm:text-xs font-mono min-w-0">
-                  <span className="w-3 h-3 rounded-full bg-red-400 shrink-0" />
-                  <span className="w-3 h-3 rounded-full bg-yellow-400 shrink-0" />
-                  <span className="w-3 h-3 rounded-full bg-green-400 shrink-0" />
-                  <span className="ml-1 sm:ml-2 text-zinc-500 truncate">tertho@portfolio — zsh</span>
-                </div>
-                <span className="text-[10px] sm:text-[11px] px-2 py-1 rounded-full bg-zinc-100 dark:bg-zinc-800 font-mono shrink-0">projects/</span>
-              </div>
-              <div className="mt-5 sm:mt-6 font-mono text-[11px] sm:text-[12px] leading-5">
-                <div className="text-zinc-500">$ whoami</div>
-                <div className="font-medium">CSE Grad • AI/ML • Python • Web • QA</div>
-                <div className="text-zinc-500 mt-3">$ ls ~/projects --top 4</div>
-                <div className="grid grid-cols-2 gap-2 mt-2">
-                  {projects.slice(0,4).map(p=>(
-                    <div key={p.id} className="rounded-lg border border-zinc-200 dark:border-zinc-800 p-2.5 sm:p-3 bg-zinc-50 dark:bg-zinc-800/50 min-w-0">
-                      <div className="font-semibold text-zinc-900 dark:text-white text-xs truncate">{p.title}</div>
-                      <div className="text-[10px] sm:text-[11px] text-zinc-500 truncate">{p.subtitle}</div>
-                    </div>
-                  ))}
-                </div>
-                <div className="mt-4 flex flex-wrap items-center gap-2">
-                  <span className="px-2 py-1 rounded bg-emerald-500 text-white text-[11px]">● open to collaborate</span>
-                  <span className="text-zinc-500 text-[11px]">Perfectionist • Ships complete</span>
-                </div>
-                <div className="mt-3 h-2 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
-                  <motion.div initial={{width: '20%'}} animate={{width: '82%'}} transition={{duration:1.2, delay:0.5}} className="h-full bg-zinc-900 dark:bg-white" />
-                </div>
-              </div>
-              <div className="mt-5 sm:mt-6 flex gap-2">
-                <a href="mailto:terthoghosh1@gmail.com" className="flex-1 flex items-center justify-center gap-2 h-10 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black text-xs sm:text-sm font-medium min-w-0 px-2">
-                  <Mail size={14} className="shrink-0"/><span className="truncate">terthoghosh1@gmail.com</span>
-                </a>
-                <button onClick={()=>{
-                  navigator.clipboard.writeText('terthoghosh1@gmail.com'); setCopied(true); setTimeout(()=>setCopied(false),1500)
-                }} aria-label="Copy email" className="w-10 h-10 grid place-items-center rounded-xl border border-zinc-200 dark:border-zinc-700 shrink-0">
-                  {copied ? <Check size={16} className="text-emerald-600"/> : <Copy size={16}/>}
-                </button>
-              </div>
-              <div className="mt-3 flex flex-wrap items-center gap-2 text-xs text-zinc-500">
-                <span className="inline-flex items-center gap-1"><MapPin size={12}/> Dhaka</span>
-                <span className="hidden sm:inline">•</span>
-                <span>Photo placeholder — add later</span>
-              </div>
-            </div>
-            <motion.div animate={{y:[0, -6, 0]}} transition={{duration:4, repeat:Infinity, ease:'easeInOut'}} className="hidden lg:flex mt-4 ml-2 items-center gap-3 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg w-fit">
-              <div className="w-10 h-10 rounded-xl bg-violet-600 grid place-items-center text-white"><Sparkles size={18}/></div>
+            {/* Minimal floating note — now sits naturally below photo, not overlapping */}
+            <motion.div animate={{y:[0, -4, 0]}} transition={{duration:5, repeat:Infinity, ease:'easeInOut'}} className="hidden lg:flex mt-3 ml-2 items-center gap-3 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg w-fit">
+              <div className="w-9 h-9 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center"><Sparkles size={16}/></div>
               <div>
-                <div className="text-xs font-semibold">Fast learner • Analytical</div>
-                <div className="text-[11px] text-zinc-500">Leads, experiments, finishes</div>
+                <div className="text-xs font-semibold">AI/ML • Python • Web</div>
+                <div className="text-[11px] text-zinc-500">Builder who finishes</div>
               </div>
             </motion.div>
           </motion.div>
@@ -384,10 +339,10 @@ export default function App(){
             <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-zinc-500"><span className="w-1.5 h-1.5 rounded-full bg-zinc-900 dark:bg-white"/> About</div>
             <h2 className="font-display text-[24px] sm:text-[28px] font-semibold tracking-tight mt-3">Perfectionist builder who ships.</h2>
             <p className="mt-3 text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              CSE graduate from Jagannath University (3.88/4.00, 8th sem done — result Dec 2026; NDC 5.00, Lalmohan 5.00). I’m drawn to <span className="font-medium text-zinc-900 dark:text-white">AI, ML and LLMs</span>, plus web development, testing and everything Python. I’m a fast learner, analytical, and a self-described perfectionist — I don’t leave a job half-done. I love to lead, experiment and explore new tech until it’s truly understood.
+              I focus on building complete systems — from OS privileges and TCP/IP to SBERT embeddings and dual-LoRA tuning. That has meant being in the founding cohort at ITRRC Cybersecurity Lab, solo-shipping <span className="font-medium text-zinc-900 dark:text-white">PlagioScale</span> & <span className="font-medium text-zinc-900 dark:text-white">CVInsight</span> end-to-end, and reproducing <span className="font-medium text-zinc-900 dark:text-white">MentalQLM</span>. I document, test and keep audit trails by habit.
             </p>
             <p className="mt-3 text-[14px] sm:text-[15px] text-zinc-600 dark:text-zinc-400 leading-relaxed">
-              That mindset shows: founding cohort at ITRRC Cybersecurity Lab, solo shipping of <span className="font-medium text-zinc-900 dark:text-white">PlagioScale</span> & <span className="font-medium text-zinc-900 dark:text-white">CVInsight</span> end-to-end, plus deep dives like <span className="font-medium text-zinc-900 dark:text-white">MentalQLM</span> (dual-LoRA LLM). I document, test and audit like a habit — whether it’s GITC-style evidence or just clean code.
+              Outside code I’ve led people and budgets — 6-member finance team at TEDxJnU (500+ attendees) and Treasurer at IEEE JnU — so I care about clarity, evidence and shipping things properly.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
               {['AI/ML','LLMs & LoRA','Python','Web Dev','QA & Testing','Leadership','Experimentation'].map(t=>(
@@ -401,7 +356,7 @@ export default function App(){
               <div className="relative">
                 <div className="flex items-center gap-2 text-xs font-mono text-zinc-400"><Lock size={12}/> Availability</div>
                 <div className="mt-2 font-display text-xl leading-tight">Open to AI/ML, Python, Web & Security roles</div>
-                <div className="mt-2 text-sm text-zinc-300 leading-relaxed">Dhaka-based. Fast learner, analytical, loves leading & experimenting. Let’s build something you’re proud to audit.</div>
+                <div className="mt-2 text-sm text-zinc-300 leading-relaxed">Dhaka-based, open to on-site/hybrid. Let’s build something you’re proud to ship and audit.</div>
                 <a href="#contact" className="mt-4 inline-flex items-center gap-2 px-4 h-10 rounded-full bg-white text-black text-sm font-medium">Let’s talk <ChevronRight size={14}/></a>
               </div>
             </div>
@@ -605,7 +560,7 @@ export default function App(){
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-zinc-500"><span className="w-1.5 h-1.5 rounded-full bg-emerald-500"/> Contact</div>
               <h2 className="font-display text-2xl sm:text-3xl font-semibold tracking-tight mt-3 leading-tight">Let’s build something<br/>you’re proud to ship.</h2>
-              <p className="mt-3 text-sm sm:text-[15px] text-zinc-600 dark:text-zinc-400 leading-relaxed">Perfectionist, fast learner, analytical — I explore until it’s complete. Reach me professionally via email or the form. I reply fast. No phone exposed — your privacy & mine.</p>
+              <p className="mt-3 text-sm sm:text-[15px] text-zinc-600 dark:text-zinc-400 leading-relaxed">Reach me via email or the form — I reply fast. No phone exposed, just professional contact.</p>
               <div className="mt-6 space-y-3 text-sm">
                 <a href="mailto:terthoghosh1@gmail.com" className="flex items-center gap-3 p-3 rounded-xl border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition">
                   <span className="w-9 h-9 rounded-lg bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center shrink-0"><Mail size={16}/></span>
