@@ -237,7 +237,7 @@ export default function App(){
             <button onClick={()=>setDark(!dark)} aria-label="Toggle theme" className="w-9 h-9 rounded-full border border-zinc-200 dark:border-zinc-800 grid place-items-center hover:bg-zinc-100 dark:hover:bg-zinc-900 transition">
               {dark ? <Sun size={16}/> : <Moon size={16}/>}
             </button>
-            <a href="/Tertho_Ghosh_CV.pdf" target="_blank" className="hidden sm:inline-flex items-center gap-2 px-4 h-9 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black text-sm font-medium hover:opacity-90 transition whitespace-nowrap">
+            <a href={`${import.meta.env.BASE_URL}Tertho_Ghosh_CV.pdf`} target="_blank" className="hidden sm:inline-flex items-center gap-2 px-4 h-9 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black text-sm font-medium hover:opacity-90 transition whitespace-nowrap">
               <Download size={14}/> CV
             </a>
             <button onClick={()=>setMenuOpen(!menuOpen)} aria-label="Menu" className="md:hidden w-9 h-9 grid place-items-center rounded-full border border-zinc-200 dark:border-zinc-800">
@@ -250,7 +250,7 @@ export default function App(){
             <motion.div initial={{height:0}} animate={{height:'auto'}} exit={{height:0}} className="md:hidden overflow-hidden border-t border-zinc-200 dark:border-zinc-800 bg-[#fcfcf9] dark:bg-[#0a0a0a]">
               <div className="px-4 py-3 flex flex-col gap-1 text-sm">
                 {['About','Skills','Projects','Experience','Contact'].map(s=> <a key={s} onClick={()=>setMenuOpen(false)} href={`#${s.toLowerCase()}`} className="py-2.5 px-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-900">{s}</a>)}
-                <a href="/Tertho_Ghosh_CV.pdf" target="_blank" className="mt-2 inline-flex justify-center items-center gap-2 h-10 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black font-medium">Download CV</a>
+                <a href={`${import.meta.env.BASE_URL}Tertho_Ghosh_CV.pdf`} target="_blank" className="mt-2 inline-flex justify-center items-center gap-2 h-10 rounded-full bg-zinc-900 dark:bg-white text-white dark:text-black font-medium">Download CV</a>
               </div>
             </motion.div>
           )}
@@ -315,7 +315,7 @@ export default function App(){
             {/* Photo — reduced width, height matched to left text column, no captions */}
             <div className="w-full max-w-[320px] lg:max-w-[340px] rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white p-2 shadow-[0_20px_60px_rgba(0,0,0,0.08)] self-start">
               <div className="rounded-[16px] bg-white overflow-hidden aspect-[4/5] grid place-items-center">
-                <img src="/photo.png" alt="Tertho Ghosh" className="w-full h-full object-cover object-top bg-white scale-[1.02] origin-top" loading="eager" />
+                <img src={`${import.meta.env.BASE_URL}photo.png`} alt="Tertho Ghosh" className="w-full h-full object-cover object-top bg-white scale-[1.02] origin-top" loading="eager" />
               </div>
             </div>
           </motion.div>
@@ -590,7 +590,7 @@ export default function App(){
           <span className="text-center md:text-left">© {new Date().getFullYear()} Tertho Ghosh • CSE JnU • AI/ML • Python • Web • QA — Clean, responsive, auditable.</span>
           <span className="flex items-center gap-4">
             <a href="#" className="hover:text-zinc-900 dark:hover:text-white">Top ↑</a>
-            <a href="/Tertho_Ghosh_CV.pdf" className="hover:text-zinc-900 dark:hover:text-white">CV</a>
+            <a href={`${import.meta.env.BASE_URL}Tertho_Ghosh_CV.pdf`} className="hover:text-zinc-900 dark:hover:text-white">CV</a>
           </span>
         </footer>
       </section>
