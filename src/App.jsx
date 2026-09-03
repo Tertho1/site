@@ -210,6 +210,7 @@ export default function App(){
   const filtered = filter==='All' ? projects : projects.filter(p=> p.stack.includes(filter) || p.category.includes(filter) || (filter==='Featured' && p.highlight))
 
   const [showTop, setShowTop] = useState(false)
+  const [formStatus, setFormStatus] = useState({ state: 'idle', msg: '' })
   useEffect(()=>{
     const onScroll = () => setShowTop(window.scrollY > 400)
     window.addEventListener('scroll', onScroll, { passive: true })
@@ -565,23 +566,75 @@ export default function App(){
                 </div>
               </div>
             </div>
-            <form onSubmit={e=>{
+            <form onSubmit={async e=>{
               e.preventDefault()
-              const fd = new FormData(e.currentTarget)
-              const subject = encodeURIComponent(`Portfolio inquiry from ${fd.get('name')}`)
-              const body = encodeURIComponent(`From: ${fd.get('name')} <${fd.get('email')}>\n\n${fd.get('message')}\n\n— via tertho portfolio`)
-              window.location.href = `mailto:terthoghosh1@gmail.com?subject=${subject}&body=${body}`
+              const form = e.currentTarget
+              const fd = new FormData(form)
+              const name = fd.get('name')
+              const email = fd.get('email')
+              const message = fd.get('message')
+              setFormStatus({ state: 'sending', msg: '' })
+              // Primary: Web3Forms (free 250/mo) — replace YOUR_WEB3FORMS_KEY with your key from web3forms.com
+              const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'
+              const hasWeb3Key = WEB3FORMS_KEY && !WEB3FORMS_KEY.includes('YOUR_')
+              try {
+                if (hasWeb3Key) {
+                  const res = await fetch('https://api.web3forms.com/submit', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                      access_key: WEB3FORMS_KEY,
+                      name, email, message,
+                      subject: `Portfolio inquiry from ${name}`,
+                      from_name: 'Tertho Portfolio',
+                    }),
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+                  })
+                  const data = await res.json()
+                  if (data.success) throw new Error('web3success')
+                  // if not success, fall through to fallback
+                  throw new Error(data.message || 'web3 failed')
+                } else {
+                  throw new Error('no web3 key')
+                }
+              } catch (err) {
+                if (err.message === 'web3success') {
+                  setFormStatus({ state: 'success', msg: 'Message sent ✓ — I will reply soon.' })
+                  form.reset()
+                  return
+                }
+                // Fallback: FormSubmit AJAX (works with just your email, no key)
+                try {
+                  const res2 = await fetch('https://formsubmit.co/ajax/terthoghosh1@gmail.com', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify({ name, email, message, _subject: `Portfolio inquiry from ${name}`, _captcha: 'false' })
+                  })
+                  const d2 = await res2.json()
+                  if (res2.ok) {
+                    setFormStatus({ state: 'success', msg: 'Message sent ✓ — via fallback, I will reply soon.' })
+                    form.reset()
+                    return
+                  }
+                  throw new Error(d2.message || 'fallback failed')
+                } catch (e2) {
+                  setFormStatus({ state: 'error', msg: 'Could not send. Please email terthoghosh1@gmail.com directly.' })
+                }
+              }
             }} className="rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 p-5 sm:p-6">
               <div className="text-sm font-medium">Send a message</div>
-              <div className="text-xs text-zinc-500">Professional contact — opens your email client. Works on GitHub Pages, no backend.</div>
+              <div className="text-xs text-zinc-500">Direct to my inbox — Web3Forms primary, FormSubmit fallback. No email app needed.</div>
               <div className="mt-4 grid gap-3">
-                <input name="name" required placeholder="Your name" autoComplete="name" className="h-11 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-sm" />
-                <input name="email" required type="email" placeholder="Your email" autoComplete="email" className="h-11 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-sm" />
-                <textarea name="message" required rows={4} placeholder="Tell me about the role / project — goals, timeline, what you need..." className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-sm resize-y min-h-[110px]" />
-                <button type="submit" className="h-11 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-medium hover:opacity-90 transition text-sm">Send via email →</button>
-                <div className="text-[11px] text-zinc-500 text-center leading-relaxed">Or copy: <button type="button" onClick={()=>{
+                <input name="name" required placeholder="Your name" autoComplete="name" disabled={formStatus.state==='sending'} className="h-11 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-sm disabled:opacity-60" />
+                <input name="email" required type="email" placeholder="Your email" autoComplete="email" disabled={formStatus.state==='sending'} className="h-11 px-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-sm disabled:opacity-60" />
+                <textarea name="message" required rows={4} placeholder="Tell me about the role / project — goals, timeline, what you need..." disabled={formStatus.state==='sending'} className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 outline-none focus:ring-2 focus:ring-violet-500/20 focus:border-violet-500 text-sm resize-y min-h-[110px] disabled:opacity-60" />
+                <button type="submit" disabled={formStatus.state==='sending'} className="h-11 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black font-medium hover:opacity-90 transition text-sm disabled:opacity-60">
+                  {formStatus.state==='sending' ? 'Sending…' : formStatus.state==='success' ? 'Sent ✓' : 'Send message →'}
+                </button>
+                {formStatus.msg && <div className={`text-xs text-center px-3 py-2 rounded-lg ${formStatus.state==='success' ? 'bg-emerald-50 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800' : 'bg-red-50 dark:bg-red-950 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-800'}`}>{formStatus.msg}</div>}
+                <div className="text-[11px] text-zinc-500 text-center leading-relaxed">Fallback copy: <button type="button" onClick={()=>{
                     navigator.clipboard.writeText('terthoghosh1@gmail.com'); setCopied(true); setTimeout(()=>setCopied(false),1500)
                   }} className="underline decoration-dotted underline-offset-4 font-mono">{copied ? 'copied ✓' : 'terthoghosh1@gmail.com'}</button></div>
+                <div className="text-[10px] text-zinc-400 text-center">Web3Forms 250/mo free → auto fallback to FormSubmit if limit hit.</div>
               </div>
             </form>
           </div>
