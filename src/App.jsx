@@ -297,7 +297,7 @@ export default function App(){
             <div className="mt-8 sm:mt-10 grid grid-cols-3 divide-x divide-zinc-200 dark:divide-zinc-800 border border-zinc-200 dark:border-zinc-800 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900">
               {[
                 {k:'500+', v:'Problems', sub:'Codeforces Pupil'},
-                {k:'6 mo', v:'Cybersecurity', sub:'ITRRC Founding'},
+                {k:'6 Months', v:'Cybersecurity', sub:'ITRRC • Founding Cohort'},
                 {k:'3.88', v:'CGPA', sub:'JnU • NDC 5.00'},
               ].map(s=>(
                 <div key={s.k} className="px-3 sm:px-6 py-4 sm:py-5 min-w-0">
