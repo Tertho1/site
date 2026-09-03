@@ -125,10 +125,12 @@ const moreBuilds = [
 ]
 
 const skills = [
-  { group: 'AI / ML & LLMs', icon: Sparkles, items: ['Python','Pandas','NumPy','Scikit-learn','NLP','Torch','XGBoost','BART','SBERT','LoRA','LLaMA-Factory'], accent: 'violet' },
-  { group: 'Web & Backend', icon: Code2, items: ['FastAPI','React','Docker','Microservices','Laravel','Supabase','PostgreSQL','MySQL','Git'], accent: 'zinc' },
+  { group: 'Programming & Problem Solving', icon: Code2, items: ['C','C++','Java','Python','Competitive Programming','Problem Solving','Data Structures','Algorithms'], accent: 'zinc' },
+  { group: 'AI / ML & LLMs', icon: Sparkles, items: ['Pandas','NumPy','Scikit-learn','NLP','Torch','XGBoost','BART','SBERT','LoRA','LLaMA-Factory'], accent: 'violet' },
+  { group: 'Web & Backend', icon: Layers, items: ['FastAPI','React','Docker','Microservices','Laravel','Supabase','PostgreSQL','MySQL','Git'], accent: 'zinc' },
   { group: 'Systems & Security', icon: Shield, items: ['Ubuntu','Kali','Linux CLI','TCP/IP','OSI','Subnetting','OSPF/BGP','Cryptography','OSINT','Recon'], accent: 'emerald' },
   { group: 'Testing & QA', icon: Search, items: ['Manual Testing','Automation','Validation','Audit Logs','Control Testing','Evidence'], accent: 'amber' },
+  { group: 'Soft Skills', icon: HeartHandshake, items: ['Leadership','Event Management','Event Planning & Budgeting','Communication','Team Coordination','Budget Management'], accent: 'amber' },
 ]
 
 const experiences = [
