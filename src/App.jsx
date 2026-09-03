@@ -309,25 +309,13 @@ export default function App(){
             </div>
           </div>
 
-          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0">
-            {/* Photo — white background as requested for transparent PNG — single hero visual, like leerob/antfu/rauno */}
-            <div className="rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white p-2 sm:p-3 shadow-[0_20px_60px_rgba(0,0,0,0.08)]">
-              <div className="rounded-[16px] bg-white overflow-hidden aspect-[4/5] grid place-items-center">
+          <motion.div initial={{opacity:0, y:12}} animate={{opacity:1,y:0}} transition={{delay:0.1}} className="relative min-w-0 flex justify-center lg:justify-end">
+            {/* Photo — reduced width, height matched to left text column, no captions */}
+            <div className="w-full max-w-[320px] lg:max-w-[340px] rounded-[24px] border border-zinc-200 dark:border-zinc-800 bg-white p-2 shadow-[0_20px_60px_rgba(0,0,0,0.08)] self-start">
+              <div className="rounded-[16px] bg-white overflow-hidden aspect-[4/5] max-h-[520px] grid place-items-center">
                 <img src="/photo.png" alt="Tertho Ghosh" className="w-full h-full object-cover object-top bg-white" loading="eager" />
               </div>
-              <div className="px-2 pt-3 pb-1 flex items-center justify-between">
-                <span className="text-xs font-mono text-zinc-500">Tertho Ghosh • Dhaka • JnU CSE</span>
-                <span className="hidden sm:inline text-[11px] px-2 py-1 rounded-full bg-zinc-900 text-white font-mono">Available</span>
-              </div>
             </div>
-            {/* Minimal floating note — now sits naturally below photo, not overlapping */}
-            <motion.div animate={{y:[0, -4, 0]}} transition={{duration:5, repeat:Infinity, ease:'easeInOut'}} className="hidden lg:flex mt-3 ml-2 items-center gap-3 px-4 py-3 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-lg w-fit">
-              <div className="w-9 h-9 rounded-xl bg-zinc-900 dark:bg-white text-white dark:text-black grid place-items-center"><Sparkles size={16}/></div>
-              <div>
-                <div className="text-xs font-semibold">AI/ML • Python • Web</div>
-                <div className="text-[11px] text-zinc-500">Builder who finishes</div>
-              </div>
-            </motion.div>
           </motion.div>
         </div>
       </section>
