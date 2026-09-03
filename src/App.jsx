@@ -574,8 +574,8 @@ export default function App(){
               const email = fd.get('email')
               const message = fd.get('message')
               setFormStatus({ state: 'sending', msg: '' })
-              // Primary: Web3Forms (free 250/mo) — replace YOUR_WEB3FORMS_KEY with your key from web3forms.com
-              const WEB3FORMS_KEY = 'YOUR_WEB3FORMS_ACCESS_KEY'
+              // Primary: Web3Forms — key injected at build via GitHub Secrets (not in repo)
+              const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY || ''
               const hasWeb3Key = WEB3FORMS_KEY && !WEB3FORMS_KEY.includes('YOUR_')
               try {
                 if (hasWeb3Key) {
