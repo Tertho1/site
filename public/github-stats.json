@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-09-07T17:45:54.424Z",
+  "repos": [
+    {
+      "repo": "Tertho1/PlagioScale",
+      "stars": 0,
+      "updated": "2026-08-27T16:25:40Z"
+    },
+    {
+      "repo": "Tertho1/cvinsight",
+      "stars": 0,
+      "updated": "2026-08-11T07:13:20Z"
+    },
+    {
+      "repo": "Tertho1/TrueMedic",
+      "stars": 2,
+      "updated": "2025-08-03T15:39:44Z"
+    },
+    {
+      "repo": "Tertho1/pdf-summarizer",
+      "stars": 1,
+      "updated": "2025-03-04T15:33:09Z"
+    }
+  ],
+  "map": {
+    "Tertho1/PlagioScale": 0,
+    "Tertho1/cvinsight": 0,
+    "Tertho1/TrueMedic": 2,
+    "Tertho1/pdf-summarizer": 1
+  }
+}

@@ -2,18 +2,19 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   darkMode: 'class',
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     extend: {
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
-        display: ['Space Grotesk', 'sans-serif'],
       },
-      animation: {
-        'fade-in': 'fadeIn 0.5s ease-out',
-        'slide-up': 'slideUp 0.6s ease-out',
-        'pulse-slow': 'pulse 3s ease-in-out infinite',
-      }
+      colors: {
+        paper: '#f5f4ef',
+        ink: '#0b0c0a',
+        flag: '#b8891f',
+        linkedin: '#0A66C2',
+      },
     },
   },
   plugins: [],

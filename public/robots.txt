@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tertho1.github.io/site/sitemap.xml
